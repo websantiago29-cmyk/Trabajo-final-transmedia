@@ -7,8 +7,8 @@
 const PUNTOS_HISTORICOS = [
   {
     id: 1,
-    lat: 4.61679,
-    lng: -74.06617,
+    lat: 4.6157031,
+    lng: -74.068954,
     titulo: "Museo Nacional de Colombia",
     fecha: "1823",
     descripcion: "Fundado por Francisco de Paula Santander como el primer museo de la república, el edificio fue construido originalmente como cárcel en 1874. Sobre la Carrera Séptima se erige como guardián de la memoria nacional, albergando más de 20.000 piezas.",
