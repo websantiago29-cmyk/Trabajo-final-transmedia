@@ -1,135 +1,185 @@
 /**
  * main.js — La Séptima: Ayer y Hoy
- * ─────────────────────────────────
- * - Mapa con marcadores grandes y visibles (incluso en Street View)
- * - Modal flotante centrado para cada punto histórico (no panel inferior)
- * - Playlist de audio con controles flotantes
- * - Panel lateral de lista de puntos
- *
- * INSTRUCCIÓN PLAYLIST:
- *   Agrega tus archivos de audio en el array PLAYLIST abajo.
- *   Ejemplo: { titulo: 'Nombre canción', src: 'audio/cancion_1.mp3' }
+ * - Marcadores con estrella + número
+ * - Polilínea dorada que une todos los puntos
+ * - Halo translúcido sobre el corredor
+ * - Frases narrativas GRANDES en Street View (estilo museográfico 3D)
+ * - Control de volumen deslizante en la playlist
+ * - Panel lateral y modal de punto histórico
  */
 
 /* ================================================================
-   PLAYLIST — agrega tus canciones aquí
-   Reemplaza los src con tus archivos de audio reales
+   PLAYLIST
    ================================================================ */
 const PLAYLIST = [
-  { titulo: 'Canela - Cesar Mora',     src: 'audio/cancion_1.mp3' },
-  { titulo: 'La Derecha - El Puñal',         src: 'audio/cancion_2.mp3' },
-  { titulo: 'La gata golosa - Fulgencio García',             src: 'audio/cancion_3.mp3' },
-    { titulo: 'La Calle Real',             src: 'audio/cancion_4.mp3' },
-      { titulo: 'La Calle Real',             src: 'audio/cancion_3.mp3' }
+  { titulo: 'Canela - Cesar Mora',               src: 'audio/cancion_1.mp3' },
+  { titulo: 'La Derecha - El Puñal',             src: 'audio/cancion_2.mp3' },
+  { titulo: 'La gata golosa - Fulgencio García', src: 'audio/cancion_3.mp3' },
+  { titulo: 'La Calle Real',                     src: 'audio/cancion_4.mp3' },
+  { titulo: 'La Calle Real (reprise)',           src: 'audio/cancion_3.mp3' }
+];
+
+/* ================================================================
+   FRASES NARRATIVAS — asignadas por índice de punto (circular)
+   ================================================================ */
+const FRASES_SV = [
+  'Aquí la ciudad aprendió a caminar su propia historia.',
+  'La Séptima no se recorre: se recuerda.',
+  'Cada esquina guarda una memoria que Bogotá aún no termina de contar.',
+  'Por esta calle pasó el país entero.',
+  'Aquí la multitud se volvió historia.',
+  'Entre vitrinas, ruinas y pasos, Bogotá cambió para siempre.',
+  'Esta no es solo una calle: es un archivo vivo.',
+  'Donde hoy caminas, ayer ardió la ciudad.',
+  'Aquí la memoria no está quieta: sigue pasando frente a nosotros.',
+  'La Séptima ha sido plaza, protesta, duelo y celebración.',
+  'Cada punto revela una capa distinta de Bogotá.',
+  'Caminar aquí es atravesar siglos en unas pocas cuadras.',
+  'La ciudad dejó huellas; este recorrido las vuelve visibles.',
+  'Aquí se cruzan la historia oficial y la memoria de la calle.',
+  'La Séptima sigue hablando, incluso cuando parece en silencio.'
 ];
 
 /* ================================================================
    ESTADO GLOBAL
    ================================================================ */
 let map;
-let markers       = [];
+let markers        = [];
 let markersVisible = true;
 let panelListOpen  = false;
 let puntoActivo    = null;
 
-// Playlist state
 let audioElement   = null;
 let playlistIndex  = 0;
 let isPlaying      = false;
+let isMuted        = false;
+
+let svOverlay      = null;
+let svFraseTimer   = null;
+let svFraseActual  = 0;
+let svPanorama     = null;
+let svNearestIdx   = -1;
 
 /* ================================================================
    ESTILOS DEL MAPA — paleta sepia/histórica
    ================================================================ */
 const MAP_STYLES = [
-  { elementType: 'geometry',          stylers: [{ color: '#ebe3d5' }] },
-  { elementType: 'labels.text.fill',  stylers: [{ color: '#523735' }] },
-  { elementType: 'labels.text.stroke',stylers: [{ color: '#f5f1eb' }] },
-  { featureType: 'administrative',    elementType: 'geometry.stroke',     stylers: [{ color: '#c9b2a6' }] },
-  { featureType: 'landscape.natural', elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
-  { featureType: 'poi',               elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
-  { featureType: 'poi',               elementType: 'labels.text.fill',    stylers: [{ color: '#93817c' }] },
-  { featureType: 'poi.park',          elementType: 'geometry.fill',       stylers: [{ color: '#a5b076' }] },
-  { featureType: 'poi.park',          elementType: 'labels.text.fill',    stylers: [{ color: '#447530' }] },
-  { featureType: 'road',              elementType: 'geometry',            stylers: [{ color: '#f5f1eb' }] },
-  { featureType: 'road.arterial',     elementType: 'geometry',            stylers: [{ color: '#fdfcf8' }] },
-  { featureType: 'road.highway',      elementType: 'geometry',            stylers: [{ color: '#f8c967' }] },
-  { featureType: 'road.highway',      elementType: 'geometry.stroke',     stylers: [{ color: '#e9bc62' }] },
-  { featureType: 'road.local',        elementType: 'labels.text.fill',    stylers: [{ color: '#806b63' }] },
-  { featureType: 'transit.line',      elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
-  { featureType: 'water',             elementType: 'geometry.fill',       stylers: [{ color: '#b9d3c2' }] },
-  { featureType: 'water',             elementType: 'labels.text.fill',    stylers: [{ color: '#92998d' }] }
+  { elementType:'geometry',          stylers:[{color:'#ebe3d5'}] },
+  { elementType:'labels.text.fill',  stylers:[{color:'#523735'}] },
+  { elementType:'labels.text.stroke',stylers:[{color:'#f5f1eb'}] },
+  { featureType:'administrative',    elementType:'geometry.stroke',  stylers:[{color:'#c9b2a6'}] },
+  { featureType:'landscape.natural', elementType:'geometry',         stylers:[{color:'#dfd2ae'}] },
+  { featureType:'poi',               elementType:'geometry',         stylers:[{color:'#dfd2ae'}] },
+  { featureType:'poi',               elementType:'labels.text.fill', stylers:[{color:'#93817c'}] },
+  { featureType:'poi.park',          elementType:'geometry.fill',    stylers:[{color:'#a5b076'}] },
+  { featureType:'poi.park',          elementType:'labels.text.fill', stylers:[{color:'#447530'}] },
+  { featureType:'road',              elementType:'geometry',         stylers:[{color:'#f5f1eb'}] },
+  { featureType:'road.arterial',     elementType:'geometry',         stylers:[{color:'#fdfcf8'}] },
+  { featureType:'road.highway',      elementType:'geometry',         stylers:[{color:'#f8c967'}] },
+  { featureType:'road.highway',      elementType:'geometry.stroke',  stylers:[{color:'#e9bc62'}] },
+  { featureType:'road.local',        elementType:'labels.text.fill', stylers:[{color:'#806b63'}] },
+  { featureType:'transit.line',      elementType:'geometry',         stylers:[{color:'#dfd2ae'}] },
+  { featureType:'water',             elementType:'geometry.fill',    stylers:[{color:'#b9d3c2'}] },
+  { featureType:'water',             elementType:'labels.text.fill', stylers:[{color:'#92998d'}] }
 ];
 
 /* ================================================================
-   ÍCONO SVG DEL MARCADOR
-   Más grande (42×54px) para mejor visibilidad en Street View
+   ÍCONO SVG — estrella + número
    ================================================================ */
 function crearIcono(numero, activo) {
-  const bg     = activo ? '#c8a84b' : '#1c1810';
-  const numCol = activo ? '#1c1810' : '#e8c96a';
-  const ring   = activo ? 'rgba(200,168,75,0.4)' : 'rgba(200,168,75,0.15)';
+  const bg      = activo ? '#c8a84b' : '#1c1810';
+  const starCol = activo ? '#1c1810' : '#e8c96a';
+  const numCol  = activo ? '#1c1810' : '#c8a84b';
+  const stroke  = activo ? '#e8c96a' : '#c8a84b';
 
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="56" viewBox="0 0 44 56">
-      <defs>
-        <filter id="s" x="-35%" y="-20%" width="170%" height="170%">
-          <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(10,8,4,0.65)"/>
-        </filter>
-      </defs>
-      <!-- Pin shape — más grande y visible -->
-      <path filter="url(#s)"
-        d="M22 2 C11 2 2 11 2 22 C2 36 22 54 22 54 C22 54 42 36 42 22 C42 11 33 2 22 2 Z"
-        fill="${bg}" stroke="#c8a84b" stroke-width="2.5"/>
-      <!-- Halo interior -->
-      <circle cx="22" cy="21" r="12" fill="${ring}"/>
-      <!-- Número -->
-      <text x="22" y="27"
-        text-anchor="middle"
-        font-family="'Playfair Display', Georgia, serif"
-        font-weight="900"
-        font-size="${numero > 9 ? '11' : '13'}"
-        fill="${numCol}">${numero}</text>
-    </svg>
-  `.trim();
+  // Estrella pequeña arriba, número abajo
+  const starPath = 'M22,10 L23.5,15 L28,15 L24.5,18 L26,23 L22,20 L18,23 L19.5,18 L16,15 L20.5,15 Z';
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="62" viewBox="0 0 48 62">
+    <defs>
+      <filter id="sh${numero}" x="-30%" y="-15%" width="160%" height="165%">
+        <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(10,8,4,0.7)"/>
+      </filter>
+    </defs>
+    <path filter="url(#sh${numero})"
+      d="M24 2 C12 2 3 11 3 23 C3 38 24 60 24 60 C24 60 45 38 45 23 C45 11 36 2 24 2 Z"
+      fill="${bg}" stroke="${stroke}" stroke-width="2"/>
+    <path d="${starPath}" fill="${starCol}" stroke="none"/>
+    <text x="24" y="42"
+      text-anchor="middle"
+      font-family="'Playfair Display',Georgia,serif"
+      font-weight="900"
+      font-size="${numero > 9 ? '10' : '12'}"
+      fill="${numCol}">${numero}</text>
+  </svg>`.trim();
 
   return {
-    url:         'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
-    scaledSize:  new google.maps.Size(44, 56),
-    anchor:      new google.maps.Point(22, 54)
+    url:        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(48, 62),
+    anchor:     new google.maps.Point(24, 60)
   };
 }
 
 /* ================================================================
-   INICIALIZACIÓN DEL MAPA — callback de Google Maps
+   HALO TRANSLÚCIDO DEL CORREDOR
+   ================================================================ */
+function crearHaloRecorrido() {
+  const cLat = 4.6025, cLng = -74.0738;
+  const latR = 0.0080, lngR = 0.0035;
+  const tilt = -2.82;
+  const pts  = [];
+
+  for (let d = 0; d <= 360; d += 8) {
+    const r = d * Math.PI / 180;
+    const x = lngR * Math.cos(r), y = latR * Math.sin(r);
+
+    pts.push({
+      lat: cLat + y * Math.cos(tilt) - x * Math.sin(tilt),
+      lng: cLng + y * Math.sin(tilt) + x * Math.cos(tilt)
+    });
+  }
+
+  new google.maps.Polygon({
+    paths: pts,
+    strokeColor: '#c8a84b',
+    strokeOpacity: 0.3,
+    strokeWeight: 1.2,
+    fillColor: '#c8a84b',
+    fillOpacity: 0.59,
+    map: map,
+    zIndex: 1
+  });
+
+}
+
+/* ================================================================
+   INICIALIZACIÓN DEL MAPA
    ================================================================ */
 function initMap() {
-
-  // Centro del tramo: Septimazo → Plaza de Bolívar
-  const centro = { lat: 4.6040, lng: -74.0710 };
+  const centro = { lat: 4.6015, lng: -74.0735 };
 
   map = new google.maps.Map(document.getElementById('map'), {
-    center: centro,
-    zoom: 15,
-    styles: MAP_STYLES,
-    mapTypeControl:      false,
-    fullscreenControl:   false,
-    streetViewControl:   true,
-    zoomControl:         true,
-    zoomControlOptions:  { position: google.maps.ControlPosition.RIGHT_CENTER },
+    center: centro, zoom: 15, styles: MAP_STYLES,
+    mapTypeControl: false, fullscreenControl: false,
+    streetViewControl: true, zoomControl: true,
+    zoomControlOptions:       { position: google.maps.ControlPosition.RIGHT_CENTER },
     streetViewControlOptions: { position: google.maps.ControlPosition.RIGHT_CENTER }
   });
 
-  // Polilínea del recorrido (línea dorada)
+  crearHaloRecorrido();
+
+  // Polilínea dorada del recorrido
   new google.maps.Polyline({
     path:          PUNTOS_HISTORICOS.map(p => ({ lat: p.lat, lng: p.lng })),
     geodesic:      true,
     strokeColor:   '#c8a84b',
-    strokeOpacity: 0.65,
-    strokeWeight:  3,
-    map
+    strokeOpacity: 0.55,
+    strokeWeight:  2.5,
+    map,
+    zIndex: 2
   });
 
-  // Crear marcadores
+  // Marcadores
   PUNTOS_HISTORICOS.forEach((punto, index) => {
     const marker = new google.maps.Marker({
       position:  { lat: punto.lat, lng: punto.lng },
@@ -139,65 +189,135 @@ function initMap() {
       animation: google.maps.Animation.DROP,
       zIndex:    100 + index
     });
-
-    // Clic → abrir modal del punto
     marker.addListener('click', () => abrirModalPunto(index));
-
-    // Hover: bounce breve
     marker.addListener('mouseover', () => {
       if (puntoActivo !== index) marker.setAnimation(google.maps.Animation.BOUNCE);
     });
     marker.addListener('mouseout', () => marker.setAnimation(null));
-
     markers.push(marker);
   });
 
-  // Clic en el mapa vacío → cerrar modal
   map.addListener('click', () => cerrarModalPunto());
-
-  // Construir lista del panel lateral
   construirPanelLista();
-
-  // Inicializar playlist (puede no reproducirse hasta interacción del usuario)
   iniciarPlaylist();
+  configurarFrasesStreetView();
+}
+
+/* ================================================================
+   FRASES EN STREET VIEW — panel grande museográfico con efecto 3D
+   ================================================================ */
+function configurarFrasesStreetView() {
+  svPanorama = map.getStreetView();
+
+  svPanorama.addListener('visible_changed', () => {
+    if (svPanorama.getVisible()) {
+      mostrarFrasesGrandes();
+    } else {
+      ocultarFrasesGrandes();
+    }
+  });
+
+  // Actualizar frase al moverse
+  svPanorama.addListener('position_changed', () => {
+    if (svPanorama.getVisible()) actualizarFrasePorPosicion();
+  });
+}
+
+function distanciaM(a, b) {
+  const R = 6371000;
+  const dLat = (b.lat - a.lat) * Math.PI / 180;
+  const dLng = (b.lng - a.lng) * Math.PI / 180;
+  const h = Math.sin(dLat/2)**2 + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function actualizarFrasePorPosicion() {
+  const pos = svPanorama.getPosition();
+  if (!pos) return;
+  const userPos = { lat: pos.lat(), lng: pos.lng() };
+  let minDist = Infinity, nearestIdx = 0;
+  PUNTOS_HISTORICOS.forEach((p, i) => {
+    const d = distanciaM(userPos, { lat: p.lat, lng: p.lng });
+    if (d < minDist) { minDist = d; nearestIdx = i; }
+  });
+  if (nearestIdx !== svNearestIdx) {
+    svNearestIdx = nearestIdx;
+    cambiarFrase(nearestIdx % FRASES_SV.length);
+  }
+}
+
+function mostrarFrasesGrandes() {
+  if (svOverlay) return;
+  svNearestIdx = -1;
+  svFraseActual = 0;
+
+  svOverlay = document.createElement('div');
+  svOverlay.id = 'sv-frase-grande';
+  svOverlay.innerHTML = buildFraseHTML(FRASES_SV[0], 1);
+  document.getElementById('map').appendChild(svOverlay);
+
+  // Timer cíclico de respaldo cada 6 segundos
+  svFraseTimer = setInterval(() => {
+    if (svNearestIdx < 0) {
+      svFraseActual = (svFraseActual + 1) % FRASES_SV.length;
+      cambiarFrase(svFraseActual);
+    }
+  }, 6000);
+}
+
+function buildFraseHTML(frase, puntoId) {
+  return `
+    <div class="svf-panel">
+      <div class="svf-inner">
+        <div class="svf-deco" aria-hidden="true">
+          <span class="svf-linea"></span>
+          <span class="svf-estrella">✦</span>
+          <span class="svf-linea"></span>
+        </div>
+        <p class="svf-texto" id="svf-texto">${frase}</p>
+        <div class="svf-label">La Séptima · Ayer y Hoy</div>
+      </div>
+    </div>`;
+}
+
+function cambiarFrase(idx) {
+  const el = document.getElementById('svf-texto');
+  if (!el) return;
+  el.classList.add('svf-fade-out');
+  setTimeout(() => {
+    el.textContent = FRASES_SV[idx % FRASES_SV.length];
+    el.classList.remove('svf-fade-out');
+    el.classList.add('svf-fade-in');
+    setTimeout(() => el.classList.remove('svf-fade-in'), 500);
+  }, 400);
+}
+
+function ocultarFrasesGrandes() {
+  if (svFraseTimer) { clearInterval(svFraseTimer); svFraseTimer = null; }
+  if (svOverlay) { svOverlay.remove(); svOverlay = null; }
+  svNearestIdx = -1;
 }
 
 /* ================================================================
    MODAL DEL PUNTO HISTÓRICO
    ================================================================ */
-
-/** Genera el HTML de la media (galería o video) */
 function mediaHTML(punto) {
-  if (punto.video && punto.video.trim() !== '') {
-    const img = punto.imagenes && punto.imagenes[0]
-      ? `<img src="${punto.imagenes[0]}" alt="Imagen de ${punto.titulo}" class="punto-media-img" loading="lazy">`
-      : `<div class="punto-media-placeholder">📷 Imagen próximamente</div>`;
-    return `
-      <video class="punto-media-video" controls preload="metadata">
-        <source src="${punto.video}" type="video/mp4">
-      </video>
-      ${img}`;
+  if (punto.video && punto.video.trim()) {
+    return `<video class="punto-media-video" controls preload="metadata">
+      <source src="${punto.video}" type="video/mp4">
+    </video>`;
   }
-
-  const imgs = punto.imagenes && punto.imagenes.length > 0 ? punto.imagenes : [];
-  if (!imgs.length) {
-    return `<div class="punto-media-placeholder">📷 Imágenes próximamente</div>`;
-  }
-
+  const imgs = punto.imagenes && punto.imagenes.length ? punto.imagenes : [];
+  if (!imgs.length) return `<div class="punto-media-placeholder">📷 Imágenes próximamente</div>`;
   return `<div class="punto-media-galeria">
-    ${imgs.map((src, i) => `
-      <img src="${src}" alt="Imagen ${i + 1} – ${punto.titulo}" class="punto-media-img" loading="lazy"
-           onerror="this.parentElement && (this.style.display='none')">`
-    ).join('')}
+    ${imgs.map((src,i) => `<img src="${src}" alt="Imagen ${i+1} – ${punto.titulo}" class="punto-media-img" loading="lazy" onerror="this.style.display='none'">`).join('')}
   </div>`;
 }
 
-/** Abre el modal flotante para el punto en la posición `index` */
 function abrirModalPunto(index) {
   const punto = PUNTOS_HISTORICOS[index];
   if (!punto) return;
 
-  // Actualizar ícono activo/inactivo
   if (puntoActivo !== null && markers[puntoActivo]) {
     markers[puntoActivo].setIcon(crearIcono(PUNTOS_HISTORICOS[puntoActivo].id, false));
     markers[puntoActivo].setZIndex(100 + puntoActivo);
@@ -206,79 +326,42 @@ function abrirModalPunto(index) {
   puntoActivo = index;
   markers[index].setIcon(crearIcono(punto.id, true));
   markers[index].setZIndex(999);
-  markers[index].setAnimation(null);
-
   map.panTo(markers[index].getPosition());
 
-  // Párrafos del texto
-  const parrafos = punto.texto.split('\n\n')
-    .filter(p => p.trim())
-    .map(p => `<p>${p.trim()}</p>`)
-    .join('');
+  const parrafos = punto.texto.split('\n\n').filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
+  const datoCurioso = punto.datoCurioso ? `<div class="punto-dato-curioso"><span class="pdc-label">✦ Dato curioso</span><p>${punto.datoCurioso}</p></div>` : '';
+  const fuente = punto.fuente ? `<p class="punto-fuente">Fuente: ${punto.fuente}</p>` : '';
+  const total = PUNTOS_HISTORICOS.length;
+  const prevOk = index > 0, nextOk = index < total - 1;
 
-  const datoCurioso = punto.datoCurioso
-    ? `<div class="punto-dato-curioso">
-        <div class="punto-dato-label">💡 Dato curioso</div>
-        <p>${punto.datoCurioso}</p>
-       </div>` : '';
-
-  const fuente = punto.fuente
-    ? `<div class="punto-fuente">Fuente: ${punto.fuente}</div>` : '';
-
-  // Botones de navegación prev/next
-  const prev = index > 0
-    ? `<button class="punto-nav-btn" onclick="abrirModalPunto(${index - 1})" title="${PUNTOS_HISTORICOS[index - 1].titulo}">← Anterior</button>`
-    : `<span class="punto-nav-btn punto-nav-btn--disabled">← Anterior</span>`;
-
-  const next = index < PUNTOS_HISTORICOS.length - 1
-    ? `<button class="punto-nav-btn" onclick="abrirModalPunto(${index + 1})" title="${PUNTOS_HISTORICOS[index + 1].titulo}">Siguiente →</button>`
-    : `<span class="punto-nav-btn punto-nav-btn--disabled">Siguiente →</span>`;
-
-  // Inyectar contenido
   document.getElementById('modal-punto-content').innerHTML = `
-    <div class="punto-modal-cabecera">
-      <div class="punto-meta-top">
-        <span class="punto-num">Punto ${punto.id} <span class="punto-total">/ ${PUNTOS_HISTORICOS.length}</span></span>
-        <span class="punto-categoria">${punto.emoji} ${punto.categoria}</span>
+    <div class="punto-modal-header">
+      <div class="punto-modal-meta">
+        <span class="punto-modal-cat">${punto.categoria||'Historia'}</span>
+        <span class="punto-modal-period">${punto.periodo||''}</span>
       </div>
-      <h2 class="punto-titulo" id="mp-title">${punto.titulo}</h2>
-      <div class="punto-periodo">${punto.periodo}</div>
-      <div class="punto-subtitulo">${punto.subtitulo}</div>
+      <h2 class="punto-modal-titulo" id="mp-title">${punto.id}. ${punto.titulo}</h2>
     </div>
-
-    <div class="punto-divider"></div>
-
     <div class="punto-modal-body">
-      <div class="punto-col-media">${mediaHTML(punto)}</div>
-      <div class="punto-col-texto">
-        <div class="punto-texto">${parrafos}</div>
-        ${datoCurioso}
-        ${fuente}
-      </div>
+      <div class="punto-modal-media">${mediaHTML(punto)}</div>
+      <div class="punto-modal-texto">${parrafos}${datoCurioso}${fuente}</div>
     </div>
-
     <div class="punto-modal-nav">
-      ${prev}
-      <button class="punto-nav-btn punto-nav-btn--lista" onclick="togglePanelLista(true)">☰ Lista</button>
-      ${next}
-    </div>
-  `;
+      <button class="punto-nav-btn${prevOk?'':' punto-nav-btn--disabled'}"
+        onclick="${prevOk?`abrirModalPunto(${index-1})`:'void(0)'}">← Anterior</button>
+      <button class="punto-nav-btn punto-nav-btn--lista" onclick="togglePanelLista(true)">Ver todos</button>
+      <button class="punto-nav-btn${nextOk?'':' punto-nav-btn--disabled'}"
+        onclick="${nextOk?`abrirModalPunto(${index+1})`:'void(0)'}">Siguiente →</button>
+    </div>`;
 
-  // Abrir modal
   const modal = document.getElementById('modal-punto');
-  if (modal) {
-    modal.classList.add('modal--open');
-    // Asegurar scroll al top del contenido
-    const box = document.getElementById('modal-punto-box');
-    if (box) box.scrollTop = 0;
-  }
+  if (modal) { modal.classList.add('modal--open'); document.body.style.overflow='hidden'; }
 }
 
-/** Cierra el modal del punto */
 function cerrarModalPunto() {
   const modal = document.getElementById('modal-punto');
   if (modal) modal.classList.remove('modal--open');
-
+  document.body.style.overflow = '';
   if (puntoActivo !== null && markers[puntoActivo]) {
     markers[puntoActivo].setIcon(crearIcono(PUNTOS_HISTORICOS[puntoActivo].id, false));
     markers[puntoActivo].setZIndex(100 + puntoActivo);
@@ -287,12 +370,11 @@ function cerrarModalPunto() {
 }
 
 /* ================================================================
-   PANEL LATERAL — lista de puntos
+   PANEL LATERAL
    ================================================================ */
 function construirPanelLista() {
   const lista = document.getElementById('panel-list');
   if (!lista) return;
-
   PUNTOS_HISTORICOS.forEach((punto, index) => {
     const item = document.createElement('div');
     item.className = 'panel-item';
@@ -308,7 +390,6 @@ function construirPanelLista() {
   });
 }
 
-/** Navega al marcador y abre su modal */
 function irAlPunto(index) {
   if (window.innerWidth < 900) togglePanelLista(false);
   map.setCenter(markers[index].getPosition());
@@ -316,7 +397,6 @@ function irAlPunto(index) {
   abrirModalPunto(index);
 }
 
-/** Abre/cierra el panel lateral de lista */
 function togglePanelLista(force) {
   panelListOpen = force !== undefined ? force : !panelListOpen;
   const panel = document.getElementById('side-panel');
@@ -324,22 +404,15 @@ function togglePanelLista(force) {
 }
 
 /* ================================================================
-   MODAL DE GUÍA (en recorrido.html)
+   MODAL DE GUÍA
    ================================================================ */
 function abrirModalGuia() {
   const m = document.getElementById('modal-guia-mapa');
-  if (m) {
-    m.classList.add('modal--open');
-    document.body.style.overflow = 'hidden';
-  }
+  if (m) { m.classList.add('modal--open'); document.body.style.overflow='hidden'; }
 }
-
 function cerrarModalGuia() {
   const m = document.getElementById('modal-guia-mapa');
-  if (m) {
-    m.classList.remove('modal--open');
-    document.body.style.overflow = '';
-  }
+  if (m) { m.classList.remove('modal--open'); document.body.style.overflow=''; }
 }
 
 /* ================================================================
@@ -350,80 +423,71 @@ function toggleMarcadores() {
   markers.forEach(m => m.setVisible(markersVisible));
   const btn = document.getElementById('btn-toggle');
   if (btn) {
-    btn.querySelector('.btn-toggle-label').textContent =
-      markersVisible ? 'Ocultar Puntos' : 'Mostrar Puntos';
+    btn.querySelector('.btn-toggle-label').textContent = markersVisible ? 'Ocultar Puntos' : 'Mostrar Puntos';
     btn.classList.toggle('active', !markersVisible);
   }
   if (!markersVisible) cerrarModalPunto();
 }
 
 /* ================================================================
-   PLAYLIST — reproductor de audio
+   PLAYLIST — con control de volumen
    ================================================================ */
 function iniciarPlaylist() {
   if (!PLAYLIST.length) {
-    // No hay canciones: ocultar el player
     const player = document.getElementById('playlist-player');
     if (player) player.style.display = 'none';
     return;
   }
-
   audioElement = new Audio();
   audioElement.volume = 0.55;
 
-  // Si el usuario llegó desde "Explorar el recorrido", reproducir automáticamente
   const autoplay = sessionStorage.getItem('iniciarPlaylist') === '1';
   sessionStorage.removeItem('iniciarPlaylist');
-
   cargarCancion(playlistIndex);
+  if (autoplay) reproducir();
 
-  if (autoplay) {
-    reproducir();
-  }
-
-  // Avanzar automáticamente al terminar la canción
-  audioElement.addEventListener('ended', () => {
-    avanzarCancion(1);
-  });
-
-  // Actualizar barra de progreso
+  audioElement.addEventListener('ended', () => avanzarCancion(1));
   audioElement.addEventListener('timeupdate', actualizarProgreso);
+
+  // Inicializar slider de volumen
+  const volSlider = document.getElementById('pl-volume');
+  if (volSlider) {
+    volSlider.value = Math.round(audioElement.volume * 100);
+    volSlider.addEventListener('input', () => {
+      if (!audioElement) return;
+      const v = volSlider.value / 100;
+      audioElement.volume = v;
+      isMuted = v === 0;
+      audioElement.muted = isMuted;
+      actualizarIconoMute();
+    });
+  }
 }
 
 function cargarCancion(index) {
   if (!audioElement || !PLAYLIST[index]) return;
-  const cancion = PLAYLIST[index];
-  audioElement.src = cancion.src;
+  audioElement.src = PLAYLIST[index].src;
   const nameEl = document.getElementById('pl-track-name');
-  if (nameEl) nameEl.textContent = cancion.titulo;
-  document.getElementById('pl-progress').style.width = '0%';
+  if (nameEl) nameEl.textContent = PLAYLIST[index].titulo;
+  const bar = document.getElementById('pl-progress');
+  if (bar) bar.style.width = '0%';
 }
 
 function reproducir() {
   if (!audioElement) return;
-  audioElement.play().then(() => {
-    isPlaying = true;
-    actualizarBtnPlay();
-  }).catch(() => {
-    // El navegador bloquea autoplay sin interacción
-    isPlaying = false;
-    actualizarBtnPlay();
-  });
+  audioElement.play().then(() => { isPlaying=true; actualizarBtnPlay(); })
+    .catch(() => { isPlaying=false; actualizarBtnPlay(); });
 }
 
 function pausar() {
   if (!audioElement) return;
-  audioElement.pause();
-  isPlaying = false;
-  actualizarBtnPlay();
+  audioElement.pause(); isPlaying=false; actualizarBtnPlay();
 }
 
-function togglePlay() {
-  isPlaying ? pausar() : reproducir();
-}
+function togglePlay() { isPlaying ? pausar() : reproducir(); }
 
-function avanzarCancion(direccion) {
-  playlistIndex = (playlistIndex + direccion + PLAYLIST.length) % PLAYLIST.length;
+function avanzarCancion(dir) {
+  playlistIndex = (playlistIndex + dir + PLAYLIST.length) % PLAYLIST.length;
   cargarCancion(playlistIndex);
   if (isPlaying) reproducir();
 }
@@ -436,16 +500,21 @@ function actualizarBtnPlay() {
 function actualizarProgreso() {
   if (!audioElement || !audioElement.duration) return;
   const pct = (audioElement.currentTime / audioElement.duration) * 100;
-  const bar = document.getElementById('pl-progress');
+  const bar  = document.getElementById('pl-progress');
   if (bar) bar.style.width = pct + '%';
 }
 
-// Toggle mute
-let isMuted = false;
 function toggleMute() {
   if (!audioElement) return;
   isMuted = !isMuted;
   audioElement.muted = isMuted;
+  actualizarIconoMute();
+  const volSlider = document.getElementById('pl-volume');
+  if (volSlider && !isMuted) volSlider.value = Math.round(audioElement.volume * 100);
+  if (volSlider && isMuted) volSlider.value = 0;
+}
+
+function actualizarIconoMute() {
   const btn = document.getElementById('pl-mute');
   if (btn) btn.textContent = isMuted ? '🔇' : '🔊';
 }
@@ -454,46 +523,27 @@ function toggleMute() {
    INICIALIZACIÓN DOM
    ================================================================ */
 document.addEventListener('DOMContentLoaded', () => {
+  const btnToggle    = document.getElementById('btn-toggle');
+  const btnPanel     = document.getElementById('btn-panel');
+  const btnPanelClose= document.getElementById('btn-panel-close');
+  const btnPuntoClose= document.getElementById('btn-punto-close');
+  const mpBackdrop   = document.getElementById('mp-backdrop');
+  const btnPlay      = document.getElementById('pl-play');
+  const btnPrev      = document.getElementById('pl-prev');
+  const btnNext      = document.getElementById('pl-next');
+  const btnMute      = document.getElementById('pl-mute');
 
-  // Toggle marcadores
-  const btnToggle = document.getElementById('btn-toggle');
-  if (btnToggle) btnToggle.addEventListener('click', toggleMarcadores);
-
-  // Abrir lista
-  const btnPanel = document.getElementById('btn-panel');
-  if (btnPanel) btnPanel.addEventListener('click', () => togglePanelLista());
-
-  // Cerrar lista
-  const btnPanelClose = document.getElementById('btn-panel-close');
+  if (btnToggle)     btnToggle.addEventListener('click', toggleMarcadores);
+  if (btnPanel)      btnPanel.addEventListener('click', () => togglePanelLista());
   if (btnPanelClose) btnPanelClose.addEventListener('click', () => togglePanelLista(false));
-
-  // Cerrar modal de punto
-  const btnPuntoClose = document.getElementById('btn-punto-close');
   if (btnPuntoClose) btnPuntoClose.addEventListener('click', cerrarModalPunto);
+  if (mpBackdrop)    mpBackdrop.addEventListener('click', cerrarModalPunto);
+  if (btnPlay)       btnPlay.addEventListener('click', togglePlay);
+  if (btnPrev)       btnPrev.addEventListener('click', () => avanzarCancion(-1));
+  if (btnNext)       btnNext.addEventListener('click', () => avanzarCancion(1));
+  if (btnMute)       btnMute.addEventListener('click', toggleMute);
 
-  // Backdrop del modal de punto
-  const mpBackdrop = document.getElementById('mp-backdrop');
-  if (mpBackdrop) mpBackdrop.addEventListener('click', cerrarModalPunto);
-
-  // Controles playlist
-  const btnPlay = document.getElementById('pl-play');
-  if (btnPlay) btnPlay.addEventListener('click', togglePlay);
-
-  const btnPrev = document.getElementById('pl-prev');
-  if (btnPrev) btnPrev.addEventListener('click', () => avanzarCancion(-1));
-
-  const btnNext = document.getElementById('pl-next');
-  if (btnNext) btnNext.addEventListener('click', () => avanzarCancion(1));
-
-  const btnMute = document.getElementById('pl-mute');
-  if (btnMute) btnMute.addEventListener('click', toggleMute);
-
-  // Escape cierra modales
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      cerrarModalPunto();
-      cerrarModalGuia();
-    }
+    if (e.key === 'Escape') { cerrarModalPunto(); cerrarModalGuia(); }
   });
-
 });

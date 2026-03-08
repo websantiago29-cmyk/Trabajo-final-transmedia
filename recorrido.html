@@ -139,7 +139,12 @@
       <span id="pl-track-name" class="pl-name">La Séptima</span>
       <div class="pl-bar"><div id="pl-progress" class="pl-progress"></div></div>
     </div>
-    <button id="pl-mute" class="pl-btn pl-btn--mute" aria-label="Silenciar / activar sonido">🔊</button>
+    <div class="pl-volume-wrap" aria-label="Control de volumen">
+      <button id="pl-mute" class="pl-btn pl-btn--mute" aria-label="Silenciar / activar sonido">🔊</button>
+      <input type="range" id="pl-volume" class="pl-volume-slider"
+        min="0" max="100" value="55"
+        aria-label="Volumen"/>
+    </div>
   </div>
 
 

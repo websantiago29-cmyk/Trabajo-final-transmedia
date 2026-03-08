@@ -1,397 +1,333 @@
 /**
- * puntos.js — La Séptima: Ayer y Hoy
- * 18 puntos históricos: Cra. 7 #18-50 (Septimazo) → Plaza de Bolívar
- *
- * Campos por punto:
- *   id, lat, lng, titulo, periodo, subtitulo, categoria, emoji,
- *   texto, datoCurioso, fuente,
- *   imagenes: ["ruta1.jpg", "ruta2.jpg"],   ← hasta 3 imágenes
- *   video: "ruta.mp4" o "",                 ← opcional
- *   audio: ""                               ← opcional, futuro uso
- *
- * Para agregar imágenes: reemplaza las rutas en el array imagenes[].
- * Para agregar video: escribe la ruta en el campo video.
- * Los marcadores en el mapa están ordenados de norte a sur (Calle 24 → Plaza Bolívar).
+ * puntos.js — La Séptima: Ayer y Hoy — 35 PUNTOS
+ * Para completar un punto "por definir": edita titulo, periodo, subtitulo,
+ * categoria, texto, datoCurioso, fuente e imagenes directamente aquí.
  */
-
 const PUNTOS_HISTORICOS = [
+  // 1
+  { id:1, lat:4.6051619, lng:-74.0716631,
+    titulo:"El Septimazo", periodo:"Décadas recientes",
+    subtitulo:"Peatonalización y cultura popular", categoria:"Espacio Público", emoji:"🎭",
+    texto:"En las últimas décadas, el tramo de la Carrera Séptima entre las calles 19 y 26 se transformó en uno de los espacios peatonales más vivos del centro de Bogotá. Lo que antes era una vía dominada por buses y carros se convirtió en un corredor cultural donde conviven artistas callejeros, vendedores, músicos, manifestaciones y encuentros ciudadanos.\n\nEste fenómeno urbano conocido popularmente como 'El Septimazo' refleja cómo la ciudad resignificó la calle como espacio de encuentro y expresión. Hoy, caminar por este tramo es observar una mezcla de memoria, protesta, comercio y cultura popular que sigue redefiniendo el significado de la Séptima.",
+    datoCurioso:"Cada domingo el Septimazo se convierte en escenario de más de cien artistas callejeros simultáneos, convirtiendo la calle en uno de los mercados informales de arte más grandes del país.",
+    fuente:"Archivo de Bogotá / IDPC",
+    imagenes:["images/p01-septimazo-1.jpg","images/p01-septimazo-2.jpg"], video:"", audio:"" },
+  // 2
+{ id:2, lat:4.6045, lng:-74.0718,
+  titulo:"Peatonalización de la Carrera Séptima",
+  periodo:"2012 – presente",
+  subtitulo:"La calle volvió a pertenecer a los peatones",
+  categoria:"Transformación Urbana", emoji:"🚶",
+  texto:"En la segunda década del siglo XXI, la Carrera Séptima atravesó una de las transformaciones urbanas más visibles de su historia reciente: la peatonalización de varios de sus tramos en el centro de Bogotá. Las obras buscaron reorganizar la movilidad, ampliar el espacio público y devolver protagonismo a los peatones en un corredor que durante décadas había estado dominado por el tráfico vehicular. En este proceso, la Séptima dejó de ser solo una vía de paso para convertirse nuevamente en un lugar de permanencia, circulación cultural y encuentro ciudadano.\n\nLa intervención reforzó el carácter simbólico de esta calle como eje histórico de la ciudad. Con nuevos andenes, mobiliario urbano, iluminación y mejoras paisajísticas, la peatonalización consolidó un escenario donde hoy conviven artistas callejeros, vendedores, transeúntes, turistas y manifestaciones públicas. Más que una obra física, la transformación reactivó una antigua vocación de la Séptima: la de ser una calle viva, recorrida y apropiada por la ciudadanía.",
+  datoCurioso:"Las fases recientes de peatonalización en el centro incluyeron los tramos entre la Avenida Jiménez y la calle 26, y entre la Plaza de Bolívar y la Casa de Nariño.",
+  fuente:"Bogotá.gov.co / IDU / IDPC",
+  imagenes:["images/p02-placeholder-1.jpg","images/p02-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 1 ─────────────────────────────────────────────────────────────────
-  {
-    id: 1,
-    lat: 4.6051619,
-    lng: -74.0716631,
-    titulo: "El Septimazo",
-    periodo: "Décadas recientes",
-    subtitulo: "Peatonalización y cultura popular",
-    categoria: "Espacio Público",
-    emoji: "🎭",
-    texto: "En las últimas décadas, el tramo de la Carrera Séptima entre las calles 19 y 26 se transformó en uno de los espacios peatonales más vivos del centro de Bogotá. Lo que antes era una vía dominada por buses y carros se convirtió en un corredor cultural donde conviven artistas callejeros, vendedores, músicos, manifestaciones y encuentros ciudadanos.\n\nEste fenómeno urbano conocido popularmente como 'El Septimazo' refleja cómo la ciudad resignificó la calle como espacio de encuentro y expresión. Hoy, caminar por este tramo es observar una mezcla de memoria, protesta, comercio y cultura popular que sigue redefiniendo el significado de la Séptima en la vida cotidiana de Bogotá.",
-    datoCurioso: "Cada domingo el Septimazo se convierte en escenario de más de cien artistas callejeros simultáneos, convirtiendo la calle en uno de los mercados informales de arte más grandes del país.",
-    fuente: "Archivo de Bogotá / IDPC",
-    imagenes: [
-      "images/p01-septimazo-1.jpg",
-      "images/p01-septimazo-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 3
+{ id:3, lat:4.6040, lng:-74.0720,
+  titulo:"Hallazgos arqueológicos bajo la Séptima",
+  periodo:"2012 – 2014",
+  subtitulo:"Capas enterradas de la historia de Bogotá",
+  categoria:"Arqueología Urbana", emoji:"🏺",
+  texto:"Las obras de peatonalización de la Carrera Séptima no solo transformaron la superficie de la calle: también sacaron a la luz parte de la historia material enterrada bajo el centro de Bogotá. Durante las excavaciones arqueológicas realizadas en el corredor aparecieron estructuras de drenaje, aljibes del siglo XIX y basureros con materiales que datan desde los siglos XVI al XVIII. Estos hallazgos permitieron confirmar que la Séptima no es únicamente un espacio de memoria simbólica, sino también un archivo físico de la evolución urbana de la ciudad.\n\nLa importancia de estos descubrimientos radica en que muestran cómo, debajo del pavimento contemporáneo, sobreviven rastros de la vida cotidiana de distintas épocas: sistemas de agua, residuos domésticos y elementos de infraestructura que hablan de la manera en que Bogotá fue creciendo, organizándose y transformándose. Así, este punto del recorrido permite imaginar la ciudad en profundidad: no solo la que se ve en fachadas y monumentos, sino también la que sigue oculta bajo los pasos de quienes hoy la recorren.",
+  datoCurioso:"Entre los hallazgos reportados oficialmente durante la peatonalización hubo aljibes del siglo XIX y basureros con materiales de los siglos XVI al XVIII.",
+  fuente:"Bogotá.gov.co / Instituto Distrital de Patrimonio Cultural",
+  imagenes:["images/p03-placeholder-1.jpg","images/p03-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 2 ─────────────────────────────────────────────────────────────────
-  {
-    id: 2,
-    lat: 4.6013797,
-    lng: -74.0733202,
-    titulo: "Edificio El Tiempo",
-    periodo: "Siglo XX — 1952",
-    subtitulo: "Prensa, censura y poder político",
-    categoria: "Historia de la Prensa",
-    emoji: "📰",
-    texto: "El periódico El Tiempo, uno de los más importantes de Colombia, tuvo una de sus sedes históricas en el centro de Bogotá, cerca de la Carrera Séptima. Desde allí se narraron algunos de los acontecimientos más importantes del país durante el siglo XX.\n\nEn 1952, durante el gobierno del general Gustavo Rojas Pinilla, el edificio fue atacado e incendiado en medio de la censura contra la prensa. El episodio refleja las tensiones entre poder político y libertad de expresión que han marcado distintos momentos de la historia colombiana.",
-    datoCurioso: "El incendio de las instalaciones de El Tiempo en 1952 fue parte de una oleada de ataques contra medios de comunicación críticos al régimen militar, que también afectó al periódico El Espectador.",
-    fuente: "Archivo histórico El Tiempo / Biblioteca Nacional",
-    imagenes: [
-      "images/p02-eltiempo-1.jpg",
-      "images/p02-eltiempo-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 4
+{ id:4, lat:4.6035, lng:-74.0721,
+  titulo:"Capilla del Humilladero",
+  periodo:"Siglos XVI – XIX",
+  subtitulo:"Un templo colonial desaparecido para abrir paso a la modernización",
+  categoria:"Patrimonio Perdido", emoji:"⛪",
+  texto:"En este sector existió durante siglos la Capilla del Humilladero, uno de los templos más antiguos del centro de Bogotá y parte del paisaje religioso de la ciudad colonial. Los humilladeros eran pequeñas capillas o santuarios ubicados en entradas y bordes urbanos, donde los viajeros se detenían a rezar antes de entrar plenamente a la ciudad. La del Humilladero bogotano estuvo ligada al antiguo entorno de la actual área de Parque Santander y fue un referente espiritual y urbano para quienes transitaban por este corredor.\n\nSu final llegó en el siglo XIX, cuando el proyecto de modernización republicana comenzó a transformar radicalmente el centro histórico. Según el Archivo de Bogotá, en 1876 el gobernador de Cundinamarca ocupó la capilla y la destinó a inspección de policía; poco después, en 1877, fue demolida para ampliar el Parque Santander. La decisión respondió a una lógica de renovación urbana que privilegió la apertura y embellecimiento del espacio público por encima de la conservación del templo. Su desaparición resume una tensión que se repite en la historia de Bogotá: la modernización de la ciudad a costa de la pérdida de parte de su patrimonio más antiguo.",
+  datoCurioso:"Antes de su demolición, la Capilla del Humilladero alcanzó a ser utilizada como inspección de policía, un destino muy distinto al religioso para el que había sido creada.",
+  fuente:"Archivo de Bogotá / Instituto Distrital de Patrimonio Cultural",
+  imagenes:["images/p04-placeholder-1.jpg","images/p04-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 3 ─────────────────────────────────────────────────────────────────
-  {
-    id: 3,
-    lat: 4.5996,
-    lng: -74.074652,
-    titulo: "Incendio del Almacén Vida",
-    periodo: "16 de diciembre de 1958",
-    subtitulo: "Una tragedia que marcó el comercio del centro",
-    categoria: "Tragedia Urbana",
-    emoji: "🔥",
-    texto: "El 16 de diciembre de 1958 ocurrió una de las tragedias urbanas más recordadas del centro de Bogotá: el incendio del Almacén Vida, un popular comercio ubicado en la Carrera Séptima. El fuego se propagó rápidamente por el edificio, generando una situación caótica que dejó decenas de víctimas.\n\nLa tragedia conmocionó a la ciudad y reveló las deficiencias en las condiciones de seguridad de muchos edificios comerciales de la época. Aunque con el tiempo el hecho fue eclipsado por otros eventos históricos del centro, el incendio del Almacén Vida permanece como uno de los episodios más trágicos en la historia del comercio de la Séptima.",
-    datoCurioso: "El incendio ocurrió durante las compras navideñas, cuando el almacén estaba lleno de clientes. La tragedia impulsó reformas en los códigos de construcción y seguridad en edificios comerciales de Bogotá.",
-    fuente: "Hemeroteca El Tiempo / Archivo de Bogotá",
-    imagenes: [
-      "images/p03-incendio-1.jpg",
-      "images/p03-incendio-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 5
+{ id:5, lat:4.6030, lng:-74.0723,
+  titulo:"La primera misa de Santa Fe",
+  periodo:"1538",
+  subtitulo:"El inicio simbólico de la ciudad en el entorno del actual Parque Santander",
+  categoria:"Fundación de Bogotá", emoji:"✝️",
+  texto:"De acuerdo con el Archivo de Bogotá, en la antigua plaza de las Yerbas —el sector donde hoy se encuentra el Parque Santander— se realizó realmente la primera misa de la ciudad en 1538. Esta afirmación es importante porque desplaza la idea más difundida que ubica todos los orígenes de Bogotá únicamente en otros puntos del centro histórico. En cambio, sitúa en este lugar uno de los actos fundacionales más significativos del establecimiento temprano de Santa Fe: la ceremonia religiosa que acompañó la instalación inicial del asentamiento español.\n\nLa importancia histórica de este hecho va más allá del rito litúrgico. En el mundo hispánico, la misa hacía parte del proceso simbólico y político de apropiación del territorio, pues vinculaba la fundación urbana con la autoridad de la Corona y con el orden cristiano. Por eso, este punto del recorrido no solo habla de religión: habla también del nacimiento de la ciudad como proyecto colonial. Pensar que uno de los primeros gestos fundacionales ocurrió aquí convierte este sector de la Séptima en una entrada privilegiada a la historia más temprana de Bogotá.",
+  datoCurioso:"El Archivo de Bogotá sostiene que la fundación de facto de 1538 ocurrió en la plaza de las Yerbas, hoy Parque Santander, y que allí se hizo realmente la primera misa.",
+  fuente:"Archivo de Bogotá / Historia de Bogotá / Academia Colombiana de Historia",
+  imagenes:["images/p05-placeholder-1.jpg","images/p05-placeholder-2.jpg"], video:"", audio:"" },
+  // 6
+  { id:6, lat:4.6027263, lng:-74.0726525,
+    titulo:"Edificio Avianca — Incendio", periodo:"1948 — 1973",
+    subtitulo:"Dos incendios que marcaron la historia de Bogotá", categoria:"Arquitectura & Tragedia", emoji:"🔥",
+    texto:"En este lugar se encontraba el Hotel Regina, uno de los edificios más representativos del centro de Bogotá en la primera mitad del siglo XX. Durante el Bogotazo de 1948, el hotel fue incendiado en medio de los disturbios que siguieron al asesinato de Jorge Eliécer Gaitán.\n\nAños después se construyó el Edificio Avianca, uno de los primeros rascacielos modernos del país. Sin embargo, en 1973 el edificio sufrió un devastador incendio que se convirtió en uno de los más recordados de la historia de la ciudad.",
+    datoCurioso:"El Edificio Avianca, inaugurado en 1969, fue durante años el más alto de Colombia con sus 37 pisos. El incendio de 1973 generó un gran debate sobre seguridad en rascacielos.",
+    fuente:"IDPC / Archivo de Bogotá",
+    imagenes:["images/p06-avianca-1.jpg","images/p06-avianca-2.jpg"], video:"", audio:"" },
+  // 7
+  { id:7, lat:4.6026352, lng:-74.0726913,
+    titulo:"Iglesia de La Veracruz", periodo:"Siglo XVI — República",
+    subtitulo:"El panteón criollo de la independencia", categoria:"Patrimonio Religioso", emoji:"🕊️",
+    texto:"La Iglesia de La Veracruz fue construida en el siglo XVI y se convirtió en el templo asociado a las élites criollas de la ciudad. Durante la época colonial y los primeros años de la República, varias figuras importantes de la historia política y militar de Colombia fueron enterradas en este lugar.\n\nDentro del templo reposan restos de personajes vinculados a la independencia, lo que convierte a la iglesia en un pequeño archivo histórico de la ciudad.",
+    datoCurioso:"La iglesia alberga los restos de algunos de los 'mártires de la independencia' ejecutados por el reconquistador Pablo Morillo entre 1816 y 1819. Por eso es conocida como 'la iglesia de los mártires'.",
+    fuente:"Instituto Distrital de Patrimonio Cultural",
+    imagenes:["images/p07-veracruz-1.jpg","images/p07-veracruz-2.jpg"], video:"", audio:"" },
+  // 8
+  { id:8, lat:4.6023786, lng:-74.0728244,
+    titulo:"Iglesia de la Orden Tercera", periodo:"Siglo XVII — presente",
+    subtitulo:"El legado franciscano en el centro de Bogotá", categoria:"Patrimonio Religioso", emoji:"✝️",
+    texto:"La Iglesia de la Orden Tercera forma parte del antiguo complejo franciscano establecido en el centro de Bogotá desde la época colonial. Este templo estaba destinado a los miembros laicos de la orden franciscana.\n\nJunto con las iglesias de San Francisco y La Veracruz, este templo forma un conjunto histórico único que revela la importancia de la religión en la formación de Bogotá.",
+    datoCurioso:"Las tres iglesias del complejo franciscano (San Francisco, La Veracruz y La Orden Tercera) forman uno de los conjuntos de arquitectura colonial religiosa mejor conservados del norte de Suramérica.",
+    fuente:"Instituto Colombiano de Antropología e Historia (ICANH)",
+    imagenes:["images/p08-ordentercera-1.jpg","images/p08-ordentercera-2.jpg"], video:"", audio:"" },
+  // 9
+  { id:9, lat:4.6022158, lng:-74.072917,
+    titulo:"Parque Santander", periodo:"Época colonial — Siglo XXI",
+    subtitulo:"Del mercado colonial al corazón del centro moderno", categoria:"Transformación Urbana", emoji:"🌿",
+    texto:"Antes de convertirse en el Parque Santander, este lugar era conocido en la época colonial como la Plaza de las Yerbas, un mercado donde se vendían hierbas medicinales, alimentos y productos traídos de las zonas rurales cercanas.\n\nHoy el parque rinde homenaje a Francisco de Paula Santander, figura clave de la independencia de Colombia, y sigue siendo un punto de encuentro en el centro histórico.",
+    datoCurioso:"En el siglo XIX, el parque era conocido también como 'Plaza de los Ladrones'. La estatua de Santander fue instalada en 1910 para conmemorar el centenario de la independencia.",
+    fuente:"Instituto Distrital de Patrimonio Cultural / Museo de Bogotá",
+    imagenes:["images/p09-santander-1.jpg","images/p09-santander-2.jpg"], video:"", audio:"" },
+  // 10
+  { id:10, lat:4.6021349, lng:-74.0729634,
+    titulo:"Hotel Granada", periodo:"Siglo XX — Demolición",
+    subtitulo:"La elegancia que desapareció del centro", categoria:"Vida Social & Arquitectura", emoji:"🏨",
+    texto:"Durante el siglo XX, el Hotel Granada fue uno de los edificios más elegantes y prestigiosos del centro de Bogotá. Representaba el auge de la vida social, política y cultural de la ciudad, atrayendo a diplomáticos, empresarios y visitantes extranjeros.\n\nEl Hotel Granada fue demolido como parte de las transformaciones urbanas del sector, dando paso a nuevas construcciones como las del Banco de la República.",
+    datoCurioso:"El Hotel Granada era considerado el establecimiento hotelero más lujoso de Colombia en su época. En sus salones se celebraron acuerdos diplomáticos y recepciones de estado.",
+    fuente:"Museo de Bogotá / Archivo fotográfico Saúl Orduz",
+    imagenes:["images/p10-granada-1.jpg","images/p10-granada-2.jpg"], video:"", audio:"" },
+  // 11
+  { id:11, lat:4.601886, lng:-74.0731073,
+    titulo:"Iglesia de San Francisco", periodo:"Siglo XVI — presente",
+    subtitulo:"El templo colonial que sobrevivió a todo", categoria:"Patrimonio Religioso", emoji:"⛪",
+    texto:"La Iglesia de San Francisco es uno de los templos más antiguos de Bogotá y uno de los pocos edificios coloniales que aún se conservan en pie en la Carrera Séptima. Su construcción comenzó en el siglo XVI y durante siglos ha sido testigo de la transformación de la ciudad a su alrededor.\n\nEl templo ha sobrevivido a terremotos, reformas urbanas y episodios violentos como el Bogotazo de 1948.",
+    datoCurioso:"El retablo mayor de la Iglesia de San Francisco es considerado una de las obras maestras del arte colonial en Colombia. Construido en el siglo XVII, está elaborado en madera tallada y cubierto con pan de oro.",
+    fuente:"Instituto Colombiano de Antropología e Historia (ICANH)",
+    imagenes:["images/p11-sanfrancisco-1.jpg","images/p11-sanfrancisco-2.jpg"], video:"", audio:"" },
+  // 12
+  { id:12, lat:4.6015, lng:-74.0732,
+    titulo:"La Loca Margarita", periodo:"1920 — 1940",
+    subtitulo:"Un personaje que la ciudad no pudo olvidar", categoria:"Memoria Popular", emoji:"👒",
+    texto:"Entre las décadas de 1920 y 1940, una mujer conocida como 'La Loca Margarita' se convirtió en uno de los personajes más famosos del centro de Bogotá. Margarita Villaquirá caminaba diariamente por la Carrera Séptima con su ropa extravagante y su actitud desafiante.\n\nCon el tiempo se convirtió en un símbolo de la cultura popular bogotana, reflejando cómo las calles también han sido escenario de personajes que dejaron huella en la memoria colectiva.",
+    datoCurioso:"Margarita Villaquirá se volvió tan icónica que varios fotógrafos de la época la retrataron repetidamente. Sus fotografías hoy hacen parte del archivo histórico de Bogotá.",
+    fuente:"Archivo de Bogotá / Colección fotográfica histórica",
+    imagenes:["images/p12-margarita-1.jpg","images/p12-margarita-2.jpg"], video:"", audio:"" },
+  // 13
+  { id:13, lat:4.6013797, lng:-74.0733202,
+    titulo:"Edificio El Tiempo", periodo:"Siglo XX — 1952",
+    subtitulo:"Prensa, censura y poder político", categoria:"Historia de la Prensa", emoji:"📰",
+    texto:"El periódico El Tiempo, uno de los más importantes de Colombia, tuvo una de sus sedes históricas en el centro de Bogotá. En 1952, durante el gobierno del general Gustavo Rojas Pinilla, el edificio fue atacado e incendiado en medio de la censura contra la prensa.\n\nEl episodio refleja las tensiones entre poder político y libertad de expresión que han marcado distintos momentos de la historia colombiana.",
+    datoCurioso:"El incendio de las instalaciones de El Tiempo en 1952 fue parte de una oleada de ataques contra medios críticos al régimen militar, que también afectó al periódico El Espectador.",
+    fuente:"Archivo histórico El Tiempo / Biblioteca Nacional",
+    imagenes:["images/p13-eltiempo-1.jpg","images/p13-eltiempo-2.jpg"], video:"", audio:"" },
+  // 14
+  // 14
+{ id:14, lat:4.6009, lng:-74.0734,
+  titulo:"El tranvía de Bogotá en la Carrera Séptima",
+  periodo:"1884 – 1951",
+  subtitulo:"El transporte que modernizó la ciudad",
+  categoria:"Historia Urbana", emoji:"🚋",
+  texto:"Durante más de medio siglo el tranvía fue el principal sistema de transporte público de Bogotá y la Carrera Séptima fue uno de sus corredores más importantes. El primer tranvía comenzó a funcionar en 1884 utilizando carros tirados por mulas que conectaban el centro de la ciudad con Chapinero. Con el paso del tiempo el sistema fue modernizado y en 1910 se electrificó, convirtiéndose en uno de los símbolos de la modernización urbana de Bogotá durante el cambio de siglo.\n\nEl tranvía recorría precisamente este corredor del centro histórico, pasando por la Séptima y conectando los espacios políticos, comerciales y sociales más importantes de la ciudad. Sin embargo, gran parte de la infraestructura del sistema fue destruida durante los disturbios del Bogotazo en 1948. Aunque el servicio continuó por algunos años más, el sistema fue finalmente desmantelado en 1951, marcando el final de una etapa fundamental en la historia del transporte de Bogotá.",
+  datoCurioso:"El tranvía eléctrico de Bogotá llegó a tener más de 40 kilómetros de líneas que conectaban el centro con barrios como Chapinero, San Diego y Teusaquillo.",
+  fuente:"Archivo de Bogotá / Museo de Bogotá / Historia del Tranvía en Bogotá",
+  imagenes:["images/p14-placeholder-1.jpg","images/p14-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 4 ─────────────────────────────────────────────────────────────────
-  {
-    id: 4,
-    lat: 4.6027263,
-    lng: -74.0726525,
-    titulo: "Edificio Avianca / Hotel Regina",
-    periodo: "1948 — 1973",
-    subtitulo: "Dos incendios que marcaron la historia de Bogotá",
-    categoria: "Arquitectura & Tragedia",
-    emoji: "🏙️",
-    texto: "En este lugar se encontraba el Hotel Regina, uno de los edificios más representativos del centro de Bogotá en la primera mitad del siglo XX. Durante el Bogotazo de 1948, el hotel fue incendiado en medio de los disturbios que siguieron al asesinato de Jorge Eliécer Gaitán.\n\nAños después se construyó el Edificio Avianca, uno de los primeros rascacielos modernos del país. Sin embargo, en 1973 el edificio sufrió un devastador incendio que se convirtió en uno de los más recordados de la historia de la ciudad. El lugar resume dos momentos distintos de crisis urbana que marcaron la memoria del centro de Bogotá.",
-    datoCurioso: "El Edificio Avianca, inaugurado en 1969, fue durante años el más alto de Colombia con sus 37 pisos. El incendio de 1973 ocurrió mientras el edificio aún era relativamente nuevo y generó un gran debate sobre seguridad en rascacielos.",
-    fuente: "IDPC / Archivo de Bogotá",
-    imagenes: [
-      "images/p04-avianca-1.jpg",
-      "images/p04-avianca-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 15
+{ id:15, lat:4.6006, lng:-74.0736,
+  titulo:"La Séptima como corredor comercial del siglo XX",
+  periodo:"1900 – 1940",
+  subtitulo:"Hoteles, vitrinas y cafés del centro moderno",
+  categoria:"Vida Urbana", emoji:"🏬",
+  texto:"Durante las primeras décadas del siglo XX la Carrera Séptima se consolidó como el principal corredor comercial y social de Bogotá. A lo largo de esta vía se concentraban hoteles elegantes, cafés, librerías, bancos y almacenes que reflejaban el crecimiento de la ciudad y la aparición de una vida urbana moderna. Caminar por la Séptima era recorrer el centro de la actividad económica y cultural de la capital.\n\nLos escaparates, las oficinas y los cafés del sector se convirtieron en lugares de encuentro para comerciantes, políticos, periodistas y estudiantes. Este ambiente urbano hizo que la calle se transformara en una especie de escenario público donde se mezclaban la vida cotidiana, la política y la cultura. Muchas de estas edificaciones desaparecieron tras el Bogotazo de 1948 y las posteriores transformaciones del centro histórico.",
+  datoCurioso:"En las primeras décadas del siglo XX la Carrera Séptima era conocida como el lugar donde estaban las vitrinas más modernas y elegantes de Bogotá.",
+  fuente:"Museo de Bogotá / Historia urbana del centro de Bogotá / Archivo de Bogotá",
+  imagenes:["images/p15-placeholder-1.jpg","images/p15-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 5 ─────────────────────────────────────────────────────────────────
-  {
-    id: 5,
-    lat: 4.6021349,
-    lng: -74.0729634,
-    titulo: "Hotel Granada",
-    periodo: "Siglo XX — Demolición",
-    subtitulo: "La elegancia que desapareció del centro",
-    categoria: "Vida Social & Arquitectura",
-    emoji: "🏨",
-    texto: "Durante el siglo XX, el Hotel Granada fue uno de los edificios más elegantes y prestigiosos del centro de Bogotá. Ubicado cerca del actual Parque Santander, representaba el auge de la vida social, política y cultural de la ciudad, atrayendo a diplomáticos, empresarios y visitantes extranjeros.\n\nCon el paso de las décadas, el centro de Bogotá cambió profundamente y muchos de sus edificios históricos fueron reemplazados. El Hotel Granada fue demolido como parte de las transformaciones urbanas del sector, dando paso a nuevas construcciones como las del Banco de la República, reflejando la transición del centro tradicional hacia un centro financiero e institucional.",
-    datoCurioso: "El Hotel Granada era considerado el establecimiento hotelero más lujoso de Colombia en su época. En sus salones se celebraron acuerdos diplomáticos y recepciones de estado que marcaron la historia política del país.",
-    fuente: "Museo de Bogotá / Archivo fotográfico Saúl Orduz",
-    imagenes: [
-      "images/p05-granada-1.jpg",
-      "images/p05-granada-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 16
+{ id:16, lat:4.6003, lng:-74.0738,
+  titulo:"Procesiones y ceremonias religiosas del centro",
+  periodo:"Siglos XVII – XX",
+  subtitulo:"La Séptima como ruta ceremonial",
+  categoria:"Memoria Religiosa", emoji:"🕊️",
+  texto:"Desde la época colonial la Carrera Séptima ha sido una de las rutas tradicionales de las procesiones religiosas que atraviesan el centro histórico de Bogotá. Las iglesias de San Francisco, La Veracruz y la Orden Tercera formaban parte de un conjunto religioso muy importante, por lo que muchas celebraciones y procesiones transitaban por este corredor hacia el corazón político y espiritual de la ciudad.\n\nEstas ceremonias religiosas reflejaban la estrecha relación entre la vida urbana y la Iglesia durante los siglos coloniales y republicanos. Incluso en el siglo XX, la Séptima continuó siendo escenario de actos religiosos multitudinarios, demostrando que esta calle no solo fue un espacio comercial o político, sino también un lugar profundamente vinculado con la espiritualidad y las tradiciones de Bogotá.",
+  datoCurioso:"Las iglesias de San Francisco, La Veracruz y la Orden Tercera forman uno de los conjuntos religiosos coloniales más importantes del centro histórico de Bogotá.",
+  fuente:"Instituto Distrital de Patrimonio Cultural / Historia religiosa de Bogotá",
+  imagenes:["images/p16-placeholder-1.jpg","images/p16-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 6 ─────────────────────────────────────────────────────────────────
-  {
-    id: 6,
-    lat: 4.6014747,
-    lng: -74.073363,
-    titulo: "La Loca Margarita",
-    periodo: "1920 — 1940",
-    subtitulo: "Un personaje que la ciudad no pudo olvidar",
-    categoria: "Memoria Popular",
-    emoji: "👒",
-    texto: "Entre las décadas de 1920 y 1940, una mujer conocida como 'La Loca Margarita' se convirtió en uno de los personajes más famosos del centro de Bogotá. Margarita Villaquirá caminaba diariamente por la Carrera Séptima con su ropa extravagante y su actitud desafiante frente a la sociedad.\n\nAunque muchos la consideraban simplemente una figura pintoresca de la ciudad, con el tiempo se convirtió en un símbolo de la cultura popular bogotana. Su historia refleja cómo las calles del centro también han sido escenario de personajes que, sin ser políticos ni líderes, dejaron huella en la memoria colectiva de la ciudad.",
-    datoCurioso: "Margarita Villaquirá se volvió tan icónica que varios fotógrafos de la época la retrataron repetidamente. Sus fotografías hoy hacen parte del archivo histórico de Bogotá y son testimonio de la vida cotidiana en la Séptima del siglo XX.",
-    fuente: "Archivo de Bogotá / Colección fotográfica histórica",
-    imagenes: [
-      "images/p06-margarita-1.jpg",
-      "images/p06-margarita-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+// 17
+{ id:17, lat:4.6000, lng:-74.0739,
+  titulo:"La Marcha del Silencio",
+  periodo:"7 de febrero de 1948",
+  subtitulo:"La multitud que pidió paz antes del Bogotazo",
+  categoria:"Historia Política", emoji:"✊",
+  texto:"El 7 de febrero de 1948, apenas dos meses antes del asesinato de Jorge Eliécer Gaitán, miles de personas participaron en una manifestación conocida como la Marcha del Silencio. La movilización recorrió el centro de Bogotá y terminó en la Plaza de Bolívar, donde Gaitán pronunció uno de sus discursos más recordados denunciando la violencia política que vivía el país.\n\nLa marcha fue una demostración masiva de apoyo popular al líder liberal y evidenció la tensión política que atravesaba Colombia en ese momento. El silencio de la multitud buscaba simbolizar un reclamo colectivo por el fin de la violencia. Solo semanas después, el asesinato de Gaitán desataría el Bogotazo, uno de los episodios más dramáticos de la historia de la ciudad.",
+  datoCurioso:"La Marcha del Silencio reunió a decenas de miles de personas en el centro de Bogotá y fue una de las mayores movilizaciones políticas del país antes del Bogotazo.",
+  fuente:"Centro Nacional de Memoria Histórica / Archivo de Bogotá / Biblioteca Nacional",
+  imagenes:["images/p17-placeholder-1.jpg","images/p17-placeholder-2.jpg"], video:"", audio:"" },
+  // 18
+  { id:18, lat:4.6012382, lng:-74.0735336,
+    titulo:"Asesinato de Jorge Eliécer Gaitán — El Bogotazo", periodo:"9 de abril de 1948",
+    subtitulo:"El asesinato que cambió la historia de Colombia", categoria:"Historia Trágica", emoji:"⚫",
+    texto:"El 9 de abril de 1948, en la Carrera Séptima cerca de la Avenida Jiménez, fue asesinado el líder liberal Jorge Eliécer Gaitán. Su muerte provocó una explosión de violencia conocida como El Bogotazo.\n\nLas protestas y disturbios que siguieron destruyeron gran parte del centro de Bogotá y marcaron el inicio de una etapa de violencia política en el país. Hoy, placas conmemorativas recuerdan el lugar del asesinato que cambió la historia de Colombia.",
+    datoCurioso:"Jorge Eliécer Gaitán fue asesinado a las 13:05 del 9 de abril de 1948. El Bogotazo dejó entre 2.000 y 5.000 muertos solo en Bogotá y destruyó más de ciento cuarenta manzanas del centro histórico.",
+    fuente:"Casa Museo Jorge Eliécer Gaitán / Biblioteca Nacional",
+    imagenes:["images/p18-gaitan-1.jpg","images/p18-gaitan-2.jpg"], video:"", audio:"" },
+ // 19
+{ id:19, lat:4.5994, lng:-74.0742,
+  titulo:"Asesinato de Rafael Uribe Uribe",
+  periodo:"15 de octubre de 1914",
+  subtitulo:"Un magnicidio antes del Bogotazo",
+  categoria:"Historia Política", emoji:"⚫",
+  texto:"El 15 de octubre de 1914 fue asesinado en el centro de Bogotá el general y líder liberal Rafael Uribe Uribe, una de las figuras políticas más influyentes de la Colombia de comienzos del siglo XX. El ataque ocurrió cerca del Capitolio Nacional cuando dos hombres lo atacaron con hachas mientras salía del edificio del Congreso.\n\nEl asesinato de Uribe Uribe conmocionó profundamente a la sociedad colombiana y se convirtió en uno de los magnicidios más recordados de la historia del país. Décadas después, el crimen sería recordado nuevamente tras el asesinato de Jorge Eliécer Gaitán en 1948, reforzando la idea de una historia política marcada por episodios de violencia en el centro de Bogotá.",
+  datoCurioso:"El asesinato de Uribe Uribe inspiró años después la novela 'La mala hora' de Gabriel García Márquez, que se basó parcialmente en el clima de violencia política del país.",
+  fuente:"Academia Colombiana de Historia / Archivo de Bogotá / Biblioteca Nacional",
+  imagenes:["images/p19-placeholder-1.jpg","images/p19-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 7 ─────────────────────────────────────────────────────────────────
-  {
-    id: 7,
-    lat: 4.6022158,
-    lng: -74.072917,
-    titulo: "Parque Santander / Plaza de las Yerbas",
-    periodo: "Época colonial — Siglo XXI",
-    subtitulo: "Del mercado colonial al corazón del centro moderno",
-    categoria: "Transformación Urbana",
-    emoji: "🌿",
-    texto: "Antes de convertirse en el Parque Santander, este lugar era conocido en la época colonial como la Plaza de las Yerbas, un mercado donde se vendían hierbas medicinales, alimentos y productos traídos de las zonas rurales cercanas. Era uno de los puntos más activos de la vida cotidiana de la ciudad colonial.\n\nCon el tiempo, el lugar fue transformándose en un espacio urbano más formal. Hoy el parque rinde homenaje a Francisco de Paula Santander, figura clave de la independencia de Colombia, y sigue siendo un punto de encuentro en el centro histórico, rodeado de bancos, comercios e instituciones que narran distintas etapas del desarrollo de Bogotá.",
-    datoCurioso: "En el siglo XIX, el parque era conocido también como 'Plaza de los Ladrones', nombre que refleja la compleja vida social del lugar. La estatua de Santander fue instalada en 1910 para conmemorar el centenario de la independencia.",
-    fuente: "Instituto Distrital de Patrimonio Cultural / Museo de Bogotá",
-    imagenes: [
-      "images/p07-santander-1.jpg",
-      "images/p07-santander-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+  // 20
+{ id:20, lat:4.5991, lng:-74.0744,
+  titulo:"La Séptima Papeleta y la Constitución de 1991",
+  periodo:"1990 – 1991",
+  subtitulo:"El movimiento estudiantil que cambió la Constitución",
+  categoria:"Historia Política", emoji:"🗳️",
+  texto:"A finales de la década de 1980 Colombia vivía una profunda crisis política marcada por la violencia del narcotráfico, el conflicto armado y la debilidad institucional. En este contexto surgió un movimiento estudiantil que impulsó la propuesta de convocar una Asamblea Constituyente para reformar el sistema político del país. La iniciativa se conoció como la 'Séptima Papeleta'.\n\nLas movilizaciones estudiantiles recorrieron las calles del centro de Bogotá, incluyendo la Carrera Séptima y la Plaza de Bolívar, convirtiendo este corredor en escenario de manifestaciones, debates y concentraciones ciudadanas. El movimiento logró impulsar la convocatoria de la Asamblea Constituyente de 1991, que dio origen a la actual Constitución Política de Colombia.",
+  datoCurioso:"La 'Séptima Papeleta' recibió su nombre porque los ciudadanos introdujeron una papeleta adicional en las elecciones de 1990 para pedir una Asamblea Constituyente.",
+  fuente:"Biblioteca Nacional de Colombia / Centro Nacional de Memoria Histórica",
+  imagenes:["images/p20-placeholder-1.jpg","images/p20-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 8 ─────────────────────────────────────────────────────────────────
-  {
-    id: 8,
-    lat: 4.6012382,
-    lng: -74.0735336,
-    titulo: "Asesinato de Jorge Eliecer Gaitan (BOGOTAZO)",
-    periodo: "9 de abril de 1948",
-    subtitulo: "El asesinato que cambió la historia de Colombia",
-    categoria: "Historia Trágica",
-    emoji: "⚫",
-    texto: "El 9 de abril de 1948, en la intersección de la Carrera Séptima con la Avenida Jiménez, fue asesinado el líder liberal Jorge Eliécer Gaitán, uno de los políticos más influyentes de la historia colombiana. Su muerte provocó una explosión de violencia conocida como El Bogotazo.\n\nLas protestas y disturbios que siguieron destruyeron gran parte del centro de Bogotá y marcaron el inicio de una etapa de violencia política en el país. Hoy, placas conmemorativas en el suelo recuerdan el lugar donde ocurrió el asesinato que cambió la historia de Colombia.",
-    datoCurioso: "Jorge Eliécer Gaitán fue asesinado a las 13:05 del 9 de abril de 1948 frente a su oficina. El Bogotazo dejó entre 2.000 y 5.000 muertos solo en Bogotá y destruyó más de ciento cuarenta manzanas del centro histórico.",
-    fuente: "Casa Museo Jorge Eliécer Gaitán / Biblioteca Nacional",
-    imagenes: [
-      "images/p08-gaitan-1.jpg",
-      "images/p08-gaitan-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+  // 21
+  { id:21, lat:4.5996554, lng:-74.0745246,
+    titulo:"Café Windsor", periodo:"1954",
+    subtitulo:"El epicentro cultural donde Bogotá aprendió a debatir", categoria:"Memoria Estudiantil & Cultural", emoji:"☕",
+    texto:"En esta zona del centro funcionaba el Café Windsor, uno de los lugares de encuentro intelectual más conocidos de la Bogotá de mediados del siglo XX. Estudiantes, periodistas y escritores se reunían allí para debatir política, literatura y actualidad.\n\nEn 1954, durante protestas estudiantiles contra el gobierno militar, varios jóvenes fueron asesinados por fuerzas del Estado. El hecho marcó profundamente la memoria del movimiento estudiantil en Colombia.",
+    datoCurioso:"El 8 y 9 de junio de 1954 fueron asesinados al menos trece estudiantes. El 9 de junio se conmemora hoy en Colombia como el Día del Estudiante Caído.",
+    fuente:"ACNUR Colombia / Archivo histórico universitario",
+    imagenes:["images/p21-windsor-1.jpg","images/p21-windsor-2.jpg"], video:"", audio:"" },
+  // 22
+  { id:22, lat:4.5996, lng:-74.074652,
+    titulo:"Incendio del Almacén Vida", periodo:"16 de diciembre de 1958",
+    subtitulo:"Una tragedia que marcó el comercio del centro", categoria:"Tragedia Urbana", emoji:"🔥",
+    texto:"El 16 de diciembre de 1958 ocurrió una de las tragedias urbanas más recordadas del centro de Bogotá: el incendio del Almacén Vida, un popular comercio en la Carrera Séptima. El fuego se propagó rápidamente dejando decenas de víctimas.\n\nLa tragedia conmocionó a la ciudad y reveló las deficiencias en las condiciones de seguridad de muchos edificios comerciales de la época.",
+    datoCurioso:"El incendio ocurrió durante las compras navideñas, cuando el almacén estaba lleno de clientes. La tragedia impulsó reformas en los códigos de construcción y seguridad en Bogotá.",
+    fuente:"Hemeroteca El Tiempo / Archivo de Bogotá",
+    imagenes:["images/p22-almacenvida-1.jpg","images/p22-almacenvida-2.jpg"], video:"", audio:"" },
+  // 23
+  { id:23, lat:4.5989668, lng:-74.0749761,
+    titulo:"Calle Real del Comercio", periodo:"Época colonial — Siglo XIX",
+    subtitulo:"El corazón económico de la ciudad colonial", categoria:"Historia Colonial", emoji:"🏪",
+    texto:"Durante la época colonial y gran parte del siglo XIX, la actual Carrera Séptima era conocida como la Calle Real del Comercio. A lo largo de esta vía se concentraban tiendas, cafés, hoteles y negocios que definían la vida económica de la ciudad.\n\nEl tránsito de tranvías, vendedores, comerciantes y ciudadanos convirtió esta calle en el verdadero corazón urbano de Bogotá.",
+    datoCurioso:"En la Calle Real del Comercio existían en el siglo XIX más de veinte chicherías, establecimientos donde se vendía chicha, la bebida fermentada de maíz más popular entre la clase popular bogotana.",
+    fuente:"Archivo General de la Nación / Museo de Bogotá",
+    imagenes:["images/p23-callereal-1.jpg","images/p23-callereal-2.jpg"], video:"", audio:"" },
+  // 24
+  { id:24, lat:4.5983653, lng:-74.0753508,
+    titulo:"Casa del Florero", periodo:"20 de julio de 1810",
+    subtitulo:"El pretexto que inició la independencia", categoria:"Independencia", emoji:"🌸",
+    texto:"La Casa del Florero, hoy Museo de la Independencia, es uno de los edificios más importantes de la historia colombiana. El 20 de julio de 1810, una disputa por el préstamo de un florero desencadenó el inicio del proceso de independencia.\n\nHoy el museo conserva objetos y relatos que permiten comprender cómo comenzó el proceso que llevó a Colombia a separarse del dominio español.",
+    datoCurioso:"El florero pertenecía al comerciante español José González Llorente. La disputa fue orquestada deliberadamente por los criollos como excusa para convocar al pueblo y declarar la junta de gobierno.",
+    fuente:"Museo de la Independencia — Casa del Florero / Ministerio de Cultura",
+    imagenes:["images/p24-florero-1.jpg","images/p24-florero-2.jpg"], video:"", audio:"" },
+  // 25
+  { id:25, lat:4.5982958, lng:-74.075435,
+    titulo:"Palacio de Justicia", periodo:"6 y 7 de noviembre de 1985",
+    subtitulo:"La toma que Colombia no ha terminado de procesar", categoria:"Historia Reciente", emoji:"⚖️",
+    texto:"El Palacio de Justicia fue escenario de uno de los episodios más dramáticos de la historia reciente de Colombia. En noviembre de 1985, el edificio fue tomado por el grupo guerrillero M-19.\n\nLa retoma militar provocó un incendio, numerosas víctimas y la desaparición de varias personas. El hecho continúa siendo objeto de investigaciones y debates sobre justicia y memoria histórica.",
+    datoCurioso:"Durante la toma desaparecieron once personas cuyo paradero aún no ha sido esclarecido. El caso sigue siendo investigado como un crimen de Estado por organismos internacionales.",
+    fuente:"Comisión de la Verdad / Centro Nacional de Memoria Histórica",
+    imagenes:["images/p25-palacioJusticia-1.jpg","images/p25-palacioJusticia-2.jpg"], video:"", audio:"" },
+  // 26
+  { id:26, lat:4.5979506, lng:-74.0756509,
+    titulo:"Plaza de Bolívar — Protestas y Paz", periodo:"Siglo XX — 2016",
+    subtitulo:"El escenario de las grandes luchas ciudadanas", categoria:"Historia Política", emoji:"✊",
+    texto:"La Plaza de Bolívar ha sido durante siglos el principal escenario político de Bogotá: manifestaciones, celebraciones, protestas y actos oficiales que reflejan las tensiones y transformaciones del país.\n\nEn 2016, tras el acuerdo de paz con las FARC, miles de personas se reunieron aquí. Se instaló un campamento por la paz que convirtió la plaza en símbolo de diálogo y esperanza.",
+    datoCurioso:"La estatua ecuestre del Libertador Simón Bolívar, obra del escultor italiano Pietro Tenerani, fue inaugurada en 1846. La plaza ha sido escenario de todos los momentos políticos clave de Colombia.",
+    fuente:"IDPC / Secretaría de Gobierno de Bogotá",
+    imagenes:["images/p26-plazabolivar-paz-1.jpg","images/p26-plazabolivar-paz-2.jpg"], video:"", audio:"" },
+  // 27
+  { id:27, lat:4.5978674, lng:-74.0757313,
+    titulo:"Galerías de Arrubla / Palacio Liévano", periodo:"1900 — presente",
+    subtitulo:"Cuando el fuego destruyó la memoria de la ciudad", categoria:"Arquitectura & Historia", emoji:"🏛️",
+    texto:"En el lugar donde hoy se encuentra el Palacio Liévano, sede de la Alcaldía de Bogotá, existieron las Galerías de Arrubla, un complejo comercial del siglo XIX que albergaba oficinas, tiendas y parte del archivo histórico de la ciudad.\n\nEn 1900 un incendio destruyó completamente las galerías y gran parte de los documentos históricos que allí se conservaban.",
+    datoCurioso:"El incendio de 1900 destruyó documentos irremplazables de la época colonial y los primeros años de la República. Es considerado uno de los mayores desastres documentales en la historia de Colombia.",
+    fuente:"Archivo de Bogotá / Alcaldía Mayor de Bogotá",
+    imagenes:["images/p27-arrubla-1.jpg","images/p27-arrubla-2.jpg"], video:"", audio:"" },
+  // 28-35 Plaza de Bolívar
+ { id:28, lat:4.5977, lng:-74.0758,
+  titulo:"Estatua de Simón Bolívar",
+  periodo:"1846",
+  subtitulo:"El primer monumento público de Bogotá",
+  categoria:"Memoria Nacional", emoji:"🗿",
+  texto:"En el centro de la Plaza de Bolívar se encuentra la estatua ecuestre de Simón Bolívar, inaugurada en 1846. Fue el primer monumento público erigido en Bogotá y uno de los más antiguos dedicados al Libertador en América Latina. La escultura fue realizada por el artista italiano Pietro Tenerani y marcó el inicio de una tradición de monumentos conmemorativos en la ciudad.\n\nLa instalación del monumento transformó la antigua Plaza Mayor colonial en un espacio simbólico de la República. Desde entonces, la estatua ha sido testigo de manifestaciones, celebraciones, actos políticos y momentos históricos que han marcado la vida del país.",
+  datoCurioso:"La estatua fue fundida en Múnich y transportada en barco hasta Colombia antes de ser instalada en la plaza en 1846.",
+  fuente:"Museo de Bogotá / Archivo de Bogotá",
+  imagenes:["images/p28-placeholder-1.jpg","images/p28-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 9 ─────────────────────────────────────────────────────────────────
-  {
-    id: 9,
-    lat: 4.5996554,
-    lng: -74.0745246,
-    titulo: "Café Windsor, el epicentro cultural donde Bogotá aprendió a debatir al calor de un buen tinto",
-    periodo: "1954",
-    subtitulo: "Intelectuales, estudiantes y represión estatal",
-    categoria: "Memoria Estudiantil",
-    emoji: "🎓",
-    texto: "En esta zona del centro funcionaba el Café Windsor, uno de los lugares de encuentro intelectual más conocidos de la Bogotá de mediados del siglo XX. Estudiantes, periodistas y escritores se reunían allí para debatir política, literatura y actualidad.\n\nSin embargo, este lugar también está asociado a un episodio trágico: en 1954, durante protestas estudiantiles contra el gobierno militar, varios jóvenes fueron asesinados por fuerzas del Estado. El hecho marcó profundamente la memoria del movimiento estudiantil en Colombia.",
-    datoCurioso: "El 8 y 9 de junio de 1954 fueron asesinados al menos trece estudiantes durante las protestas en Bogotá. El 9 de junio se conmemora hoy en Colombia como el Día del Estudiante Caído en su honor.",
-    fuente: "ACNUR Colombia / Archivo histórico universitario",
-    imagenes: [
-      "images/p09-windsor-1.jpg",
-      "images/p09-windsor-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:29, lat:4.5976, lng:-74.0757,
+  titulo:"Visita del Papa Juan Pablo II",
+  periodo:"1986",
+  subtitulo:"Una multitud en el corazón de la ciudad",
+  categoria:"Historia Religiosa", emoji:"⛪",
+  texto:"En julio de 1986 el Papa Juan Pablo II visitó Colombia y realizó varios encuentros con la población en Bogotá. Durante su paso por el centro histórico, la Plaza de Bolívar se convirtió en uno de los escenarios principales de su visita, reuniendo a miles de fieles que acudieron a ver al pontífice.\n\nEl evento fue uno de los momentos más multitudinarios que ha vivido la plaza en el siglo XX. Las imágenes de la plaza llena de personas durante la visita papal quedaron registradas como un momento simbólico de encuentro entre la ciudad, la religión y la historia contemporánea del país.",
+  datoCurioso:"La visita de Juan Pablo II fue la primera vez que un papa visitaba Colombia.",
+  fuente:"Archivo de Bogotá / Conferencia Episcopal de Colombia",
+  imagenes:["images/p29-placeholder-1.jpg","images/p29-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 10 ────────────────────────────────────────────────────────────────
-  {
-    id: 10,
-    lat: 4.5989668,
-    lng: -74.0749761,
-    titulo: "Calle Real del Comercio",
-    periodo: "Época colonial — Siglo XIX",
-    subtitulo: "El corazón económico de la ciudad colonial",
-    categoria: "Historia Colonial",
-    emoji: "🏪",
-    texto: "Durante la época colonial y gran parte del siglo XIX, la actual Carrera Séptima era conocida como la Calle Real del Comercio. A lo largo de esta vía se concentraban tiendas, cafés, hoteles y negocios que definían la vida económica de la ciudad.\n\nEl tránsito de tranvías, vendedores ambulantes, comerciantes y ciudadanos convirtió esta calle en el verdadero corazón urbano de Bogotá. Con el paso del tiempo, el nombre cambió, pero la Séptima continuó siendo uno de los espacios más importantes para la vida pública de la ciudad.",
-    datoCurioso: "En la Calle Real del Comercio existían en el siglo XIX más de veinte chicherías, establecimientos donde se vendía chicha, la bebida fermentada de maíz que era la más popular entre la clase popular bogotana.",
-    fuente: "Archivo General de la Nación / Museo de Bogotá",
-    imagenes: [
-      "images/p10-callereal-1.jpg",
-      "images/p10-callereal-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:30, lat:4.5975, lng:-74.0756,
+  titulo:"Movilizaciones estudiantiles en la Plaza de Bolívar",
+  periodo:"Siglo XX – XXI",
+  subtitulo:"La plaza como escenario de protesta",
+  categoria:"Movimientos Sociales", emoji:"🎓",
+  texto:"A lo largo del siglo XX y XXI, la Plaza de Bolívar ha sido uno de los principales escenarios de movilización estudiantil en Colombia. Universitarios de distintas instituciones han llegado hasta este lugar para exigir reformas educativas, denunciar la violencia política o participar en debates sobre el futuro del país.\n\nLas marchas estudiantiles que recorren la Carrera Séptima suelen culminar aquí, frente a las principales instituciones del poder político. Este espacio se ha convertido así en un símbolo de participación ciudadana y de la relación entre juventud, educación y democracia.",
+  datoCurioso:"Muchas marchas estudiantiles en Bogotá terminan tradicionalmente en la Plaza de Bolívar tras recorrer el centro histórico.",
+  fuente:"Centro Nacional de Memoria Histórica / Archivo de Bogotá",
+  imagenes:["images/p30-placeholder-1.jpg","images/p30-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 11 ────────────────────────────────────────────────────────────────
-  {
-    id: 11,
-    lat: 4.601886,
-    lng: -74.0731073,
-    titulo: "Iglesia de San Francisco",
-    periodo: "Siglo XVI — presente",
-    subtitulo: "El templo colonial que sobrevivió a todo",
-    categoria: "Patrimonio Religioso",
-    emoji: "⛪",
-    texto: "La Iglesia de San Francisco es uno de los templos más antiguos de Bogotá y uno de los pocos edificios coloniales que aún se conservan en pie en la Carrera Séptima. Su construcción comenzó en el siglo XVI y durante siglos ha sido testigo de la transformación de la ciudad a su alrededor.\n\nA lo largo de la historia, el templo ha sobrevivido a terremotos, reformas urbanas y episodios violentos como el Bogotazo de 1948. Su presencia recuerda la Bogotá colonial que existía mucho antes de que la Séptima se convirtiera en la gran arteria urbana que conocemos hoy.",
-    datoCurioso: "El retablo mayor de la Iglesia de San Francisco es considerado una de las obras maestras del arte colonial en Colombia. Construido en el siglo XVII, está elaborado en madera tallada y cubierto con pan de oro.",
-    fuente: "Instituto Colombiano de Antropología e Historia (ICANH)",
-    imagenes: [
-      "images/p11-sanfrancisco-1.jpg",
-      "images/p11-sanfrancisco-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:31, lat:4.5974, lng:-74.0755,
+  titulo:"Paro Nacional en la Plaza de Bolívar",
+  periodo:"2021",
+  subtitulo:"Una plaza llena de protesta y ciudadanía",
+  categoria:"Historia Reciente", emoji:"✊",
+  texto:"Durante el Paro Nacional de 2021, miles de personas se reunieron en la Plaza de Bolívar como parte de las movilizaciones que se desarrollaron en Bogotá y en todo el país. La plaza volvió a convertirse en un punto central de concentración para manifestaciones ciudadanas relacionadas con reformas sociales, económicas y políticas.\n\nLas protestas reflejaron la continuidad de una tradición histórica: desde hace décadas, las marchas que recorren la Carrera Séptima terminan en este espacio frente al Capitolio, el Palacio de Justicia y el Palacio Liévano. La plaza funciona así como un escenario simbólico donde la ciudadanía se dirige directamente al poder político.",
+  datoCurioso:"Durante el Paro Nacional de 2021 la Plaza de Bolívar fue uno de los principales puntos de concentración de las movilizaciones en Bogotá.",
+  fuente:"Defensoría del Pueblo / Archivo de Bogotá",
+  imagenes:["images/p31-placeholder-1.jpg","images/p31-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 12 ────────────────────────────────────────────────────────────────
-  {
-    id: 12,
-    lat: 4.6026352,
-    lng: -74.0726913,
-    titulo: "Iglesia de La Veracruz",
-    periodo: "Siglo XVI — República",
-    subtitulo: "El panteón criollo de la independencia",
-    categoria: "Patrimonio Religioso",
-    emoji: "🕊️",
-    texto: "La Iglesia de La Veracruz fue construida en el siglo XVI y se convirtió en el templo asociado a las élites criollas de la ciudad. Durante la época colonial y los primeros años de la República, varias figuras importantes de la historia política y militar de Colombia fueron enterradas en este lugar.\n\nDentro del templo reposan restos de personajes vinculados a la independencia, lo que convierte a la iglesia en un pequeño archivo histórico de la ciudad. Aunque muchos transeúntes pasan frente a ella sin detenerse, su interior guarda parte de la memoria política de Bogotá.",
-    datoCurioso: "La iglesia alberga los restos de algunos de los 'mártires de la independencia' ejecutados por el reconquistador Pablo Morillo entre 1816 y 1819. Por eso es conocida popularmente como 'la iglesia de los mártires'.",
-    fuente: "Instituto Distrital de Patrimonio Cultural",
-    imagenes: [
-      "images/p12-veracruz-1.jpg",
-      "images/p12-veracruz-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:32, lat:4.5973, lng:-74.0754,
+  titulo:"Campamento por la Paz",
+  periodo:"2016",
+  subtitulo:"Ciudadanos acampan tras el acuerdo de paz",
+  categoria:"Memoria Contemporánea", emoji:"🕊️",
+  texto:"Tras la firma del acuerdo de paz entre el gobierno colombiano y las FARC en 2016, un grupo de ciudadanos instaló un campamento en la Plaza de Bolívar para respaldar el proceso y exigir su implementación. Durante varias semanas el lugar se convirtió en un espacio de debate, encuentro y expresión ciudadana.\n\nEl campamento reunió a estudiantes, activistas y ciudadanos que buscaban defender el proceso de paz en medio de un momento político complejo. La plaza volvió a funcionar como escenario simbólico donde se discuten los grandes temas del país.",
+  datoCurioso:"El campamento ciudadano por la paz permaneció instalado durante varias semanas en la Plaza de Bolívar.",
+  fuente:"Centro Nacional de Memoria Histórica / Archivo de Bogotá",
+  imagenes:["images/p32-placeholder-1.jpg","images/p32-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 13 ────────────────────────────────────────────────────────────────
-  {
-    id: 13,
- lat: 4.6023786,
-    lng: -74.0728244,
-    titulo: "Iglesia de la Orden Tercera",
-    periodo: "Siglo XVII — presente",
-    subtitulo: "El legado franciscano en el centro de Bogotá",
-    categoria: "Patrimonio Religioso",
-    emoji: "✝️",
-    texto: "La Iglesia de la Orden Tercera forma parte del antiguo complejo franciscano que se estableció en el centro de Bogotá desde la época colonial. Este templo estaba destinado a los miembros laicos de la orden franciscana, conocidos como la Orden Tercera.\n\nSu arquitectura y decoración reflejan el poder que las órdenes religiosas tuvieron en la vida social de la ciudad durante siglos. Junto con las iglesias de San Francisco y La Veracruz, este templo forma un conjunto histórico único que revela la importancia de la religión en la formación de Bogotá.",
-    datoCurioso: "Las tres iglesias del complejo franciscano (San Francisco, La Veracruz y La Orden Tercera) están conectadas entre sí y forman uno de los conjuntos de arquitectura colonial religiosa mejor conservados del norte de Suramérica.",
-    fuente: "Instituto Colombiano de Antropología e Historia (ICANH)",
-    imagenes: [
-      "images/p13-ordentercera-1.jpg",
-      "images/p13-ordentercera-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:33, lat:4.5972, lng:-74.0753,
+  titulo:"Ceremonias oficiales del Estado colombiano",
+  periodo:"Siglo XIX – XXI",
+  subtitulo:"El centro simbólico del poder político",
+  categoria:"Historia Política", emoji:"🏛️",
+  texto:"La Plaza de Bolívar ha sido durante décadas el escenario de importantes ceremonias oficiales del Estado colombiano. En este espacio se realizan actos políticos, celebraciones nacionales y eventos institucionales relacionados con el funcionamiento del gobierno.\n\nDebido a que alrededor de la plaza se encuentran el Capitolio Nacional, el Palacio de Justicia y el Palacio Liévano, este lugar representa el centro simbólico del poder político del país. Por esa razón, muchas ceremonias y actos oficiales del Estado han tenido lugar en este espacio histórico.",
+  datoCurioso:"La Plaza de Bolívar está rodeada por tres poderes del Estado: judicial, legislativo y administrativo.",
+  fuente:"Archivo de Bogotá / Historia de la Plaza de Bolívar",
+  imagenes:["images/p33-placeholder-1.jpg","images/p33-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 14 ────────────────────────────────────────────────────────────────
-  {
-    id: 14,
-    lat: 4.5983653,
-    lng: -74.0753508,
-    titulo: "Casa del Florero",
-    periodo: "20 de julio de 1810",
-    subtitulo: "El pretexto que inició la independencia",
-    categoria: "Independencia",
-    emoji: "🌸",
-    texto: "La Casa del Florero, hoy Museo de la Independencia, es uno de los edificios más importantes de la historia colombiana. El 20 de julio de 1810, una disputa por el préstamo de un florero desencadenó una serie de acontecimientos que terminaron con el inicio del proceso de independencia.\n\nAunque el episodio del florero fue solo un pretexto político, el lugar se convirtió en símbolo del nacimiento de la República. Hoy el museo conserva objetos y relatos que permiten comprender cómo comenzó el proceso que llevó a Colombia a separarse del dominio español.",
-    datoCurioso: "El florero que desencadenó la revuelta pertenecía al comerciante español José González Llorente. La disputa fue orquestada deliberadamente por los criollos como excusa para convocar al pueblo y declarar la junta de gobierno.",
-    fuente: "Museo de la Independencia — Casa del Florero / Ministerio de Cultura",
-    imagenes: [
-      "images/p14-florero-1.jpg",
-      "images/p14-florero-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:34, lat:4.5971, lng:-74.0752,
+  titulo:"Celebraciones culturales en la Plaza de Bolívar",
+  periodo:"Siglo XX – XXI",
+  subtitulo:"La plaza de los encuentros ciudadanos",
+  categoria:"Memoria Urbana", emoji:"🎉",
+  texto:"Además de protestas y actos políticos, la Plaza de Bolívar también ha sido escenario de celebraciones culturales y eventos ciudadanos. Conciertos, festivales y conmemoraciones históricas han reunido a miles de personas en este espacio a lo largo de los años.\n\nEstas celebraciones muestran otra dimensión de la plaza: no solo como lugar de conflicto o debate político, sino también como espacio de encuentro colectivo donde los ciudadanos comparten momentos de cultura, música y memoria.",
+  datoCurioso:"La plaza ha sido escenario de conciertos multitudinarios organizados por la ciudad durante eventos culturales.",
+  fuente:"Instituto Distrital de Patrimonio Cultural / Archivo de Bogotá",
+  imagenes:["images/p34-placeholder-1.jpg","images/p34-placeholder-2.jpg"], video:"", audio:"" },
 
-  // ── 15 ────────────────────────────────────────────────────────────────
-  {
-    id: 15,
-    lat: 4.5978674,
-    lng: -74.0757313,
-    titulo: "Galerías de Arrubla / Palacio Liévano",
-    periodo: "1900 — presente",
-    subtitulo: "Cuando el fuego destruyó la memoria de la ciudad",
-    categoria: "Arquitectura & Historia",
-    emoji: "🏛️",
-    texto: "En el lugar donde hoy se encuentra el Palacio Liévano, sede de la Alcaldía de Bogotá, existieron las Galerías de Arrubla, un complejo comercial del siglo XIX que albergaba oficinas, tiendas y parte del archivo histórico de la ciudad.\n\nEn 1900 un incendio destruyó completamente las galerías y gran parte de los documentos históricos que allí se conservaban. Tras el desastre, el edificio fue reemplazado por el Palacio Liévano, que hoy ocupa uno de los costados de la Plaza de Bolívar.",
-    datoCurioso: "El incendio de las Galerías de Arrubla en 1900 destruyó documentos irremplazables de la época colonial y los primeros años de la República. Es considerado uno de los mayores desastres documentales en la historia de Colombia.",
-    fuente: "Archivo de Bogotá / Alcaldía Mayor de Bogotá",
-    imagenes: [
-      "images/p15-lievano-1.jpg",
-      "images/p15-lievano-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
+{ id:35, lat:4.5970, lng:-74.0751,
+  titulo:"La Plaza de Bolívar hoy",
+  periodo:"Siglo XVI – presente",
+  subtitulo:"El corazón histórico y político de Bogotá",
+  categoria:"Memoria Urbana", emoji:"📍",
+  texto:"Desde la época colonial hasta la actualidad, la Plaza de Bolívar ha sido el centro político, social y simbólico de Bogotá. Originalmente conocida como Plaza Mayor, fue el espacio donde se realizaban mercados, ceremonias oficiales, actos religiosos y eventos públicos durante la colonia.\n\nCon el paso del tiempo, la plaza se transformó en el principal escenario político del país. Hoy sigue siendo un punto de encuentro para ciudadanos, turistas y manifestaciones públicas, manteniendo su papel como uno de los espacios más importantes de la historia urbana colombiana.",
+  datoCurioso:"La plaza ha tenido varios nombres a lo largo de su historia: Plaza Mayor, Plaza de la Constitución y finalmente Plaza de Bolívar.",
+  fuente:"Museo de Bogotá / Archivo de Bogotá",
+  imagenes:["images/p35-placeholder-1.jpg","images/p35-placeholder-2.jpg"], video:"", audio:"" }
 
-  // ── 16 ────────────────────────────────────────────────────────────────
-  {
-    id: 16,
-    lat: 4.5982958,
-    lng: -74.075435,
-    titulo: "Palacio de Justicia",
-    periodo: "6 y 7 de noviembre de 1985",
-    subtitulo: "La toma que Colombia no ha terminado de procesar",
-    categoria: "Historia Reciente",
-    emoji: "⚖️",
-    texto: "El Palacio de Justicia, ubicado en el costado norte de la Plaza de Bolívar, fue escenario de uno de los episodios más dramáticos de la historia reciente de Colombia. En noviembre de 1985, el edificio fue tomado por el grupo guerrillero M-19.\n\nLa retoma militar del edificio provocó un incendio, numerosas víctimas y la desaparición de varias personas. El hecho dejó una profunda huella en la memoria del país y continúa siendo objeto de investigaciones y debates sobre justicia y memoria histórica.",
-    datoCurioso: "Durante la toma del Palacio de Justicia desaparecieron once personas cuyo paradero aún no ha sido esclarecido completamente. El caso sigue siendo investigado como un crimen de Estado por organismos internacionales de derechos humanos.",
-    fuente: "Comisión de la Verdad / Centro Nacional de Memoria Histórica",
-    imagenes: [
-      "images/p16-palacioJusticia-1.jpg",
-      "images/p16-palacioJusticia-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
-
-  // ── 17 ────────────────────────────────────────────────────────────────
-  {
-    id: 17,
-    lat: 4.5979506,
-    lng: -74.0756509,
-    titulo: "Plaza de Bolívar — Protestas y Paz",
-    periodo: "Siglo XX — 2016",
-    subtitulo: "El escenario de las grandes luchas ciudadanas",
-    categoria: "Historia Política",
-    emoji: "✊",
-    texto: "La Plaza de Bolívar ha sido durante siglos el principal escenario político de Bogotá. En este lugar se han realizado manifestaciones, celebraciones, protestas y actos oficiales que reflejan las tensiones y transformaciones del país.\n\nEn 2016, tras el acuerdo de paz entre el gobierno colombiano y la guerrilla de las FARC, miles de personas se reunieron en la plaza para apoyar el proceso. Durante semanas incluso se instaló un campamento por la paz, convirtiendo la plaza en un espacio simbólico de diálogo y esperanza.",
-    datoCurioso: "La Plaza de Bolívar fue diseñada en su forma actual por el arquitecto Lorenzo Faccini en 1846. La estatua ecuestre del Libertador Simón Bolívar, obra del escultor italiano Pietro Tenerani, fue inaugurada en 1846.",
-    fuente: "IDPC / Secretaría de Gobierno de Bogotá",
-    imagenes: [
-      "images/p17-plazabolivar-paz-1.jpg",
-      "images/p17-plazabolivar-paz-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  },
-
-  // ── 18 ────────────────────────────────────────────────────────────────
-  {
-    id: 18,
-    lat: 4.5980619,
-    lng: -74.0756243,
-    titulo: "Plaza de Bolívar — Visitas Papales",
-    periodo: "1968 — 2017",
-    subtitulo: "El corazón de la fe en Colombia",
-    categoria: "Historia Religiosa",
-    emoji: "✨",
-    texto: "La Plaza de Bolívar también ha sido escenario de grandes encuentros religiosos. A lo largo de la historia reciente, varios papas han visitado Bogotá y han realizado actos públicos cerca de este lugar.\n\nEntre ellos destacan las visitas de Pablo VI en 1968, Juan Pablo II en 1986 y Francisco en 2017, eventos que reunieron a miles de fieles y marcaron momentos importantes para la Iglesia Católica en Colombia.",
-    datoCurioso: "La visita del Papa Francisco en 2017 fue la más multitudinaria de la historia reciente de Colombia. En la Plaza de Bolívar se celebró una misa que reunió a más de un millón de personas, convirtiéndola en uno de los eventos con mayor asistencia en la historia de Bogotá.",
-    fuente: "Conferencia Episcopal de Colombia / Archivo de la Alcaldía Mayor",
-    imagenes: [
-      "images/p18-plazabolivar-papa-1.jpg",
-      "images/p18-plazabolivar-papa-2.jpg"
-    ],
-    video: "",
-    audio: ""
-  }
-
-]; // fin PUNTOS_HISTORICOS
+]
