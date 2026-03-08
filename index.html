@@ -3,126 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="La Séptima: Ayer y Hoy. Recorrido virtual por los hechos históricos de la Carrera Séptima de Bogotá, desde el Museo Nacional hasta la Plaza de Bolívar." />
-  <meta name="keywords" content="Carrera Séptima, Bogotá, historia, recorrido virtual, Colombia, patrimonio" />
-  <meta name="author" content="Proyecto Académico" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="La Séptima: Ayer y Hoy" />
-  <meta property="og:description" content="Un recorrido virtual interactivo por los hechos históricos de la Carrera Séptima de Bogotá." />
-  <meta property="og:type" content="website" />
-
+  <meta name="description" content="La Séptima: Ayer y Hoy — Recorrido transmedia por la memoria de la Carrera Séptima de Bogotá." />
   <title>La Séptima: Ayer y Hoy</title>
-
-  <!-- Estilos principales -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="home-body">
 
   <!-- ============================================================
-       ENCABEZADO DEL PERIÓDICO
+       HERO — pantalla completa
        ============================================================ -->
-  <header class="site-header anim-fade">
-    <div class="header-eyebrow">Patrimonio Cultural de Colombia</div>
-    <h1 class="header-logo">
-      La Séptima: <span>Ayer y Hoy</span>
-    </h1>
-    <p class="header-tagline">Un recorrido interactivo por la memoria de Bogotá</p>
-    <div class="header-ornament" aria-hidden="true">— ✦ —</div>
-  </header>
+  <section class="hero" id="hero" aria-label="Portada del proyecto">
 
-  <!-- ============================================================
-       SECCIÓN HERO
-       ============================================================ -->
-  <main>
-    <section class="hero-section">
+    <!-- Collage de fondo — reemplaza los src con tus imágenes reales -->
+    <div class="hero-collage" aria-hidden="true">
+      <!-- IMAGEN 1: cambia img/septima_1.jpg por tu ruta real -->
+      <div class="hc-piece hc-1"><img src="img/septima_1.jpg" alt="" /></div>
+      <!-- IMAGEN 2 -->
+      <div class="hc-piece hc-2"><img src="img/septima_2.jpg" alt="" /></div>
+      <!-- IMAGEN 3 -->
+      <div class="hc-piece hc-3"><img src="img/septima_3.jpg" alt="" /></div>
+      <!-- IMAGEN 4 -->
+      <div class="hc-piece hc-4"><img src="img/septima_4.jpg" alt="" /></div>
+      <!-- IMAGEN 5 -->
+      <div class="hc-piece hc-5"><img src="img/septima_5.jpg" alt="" /></div>
+      <!-- IMAGEN 6 -->
+      <div class="hc-piece hc-6"><img src="img/septima_6.jpg" alt="" /></div>
+    </div>
 
-      <div class="hero-columns">
+    <!-- Capa de gradiente oscuro sobre el collage -->
+    <div class="hero-overlay" aria-hidden="true"></div>
 
-        <!-- Columna izquierda: Titular principal -->
-        <div class="hero-left anim-fade-up anim-delay-1">
-          <p class="hero-date">Bogotá, Colombia · Siglo XVI al XXI</p>
-          <h2 class="hero-headline">
-            Una calle que<br/>
-            <em>atraviesa cuatro<br/>
-            siglos de historia</em>
-          </h2>
-        </div>
+    <!-- Contenido del hero -->
+    <div class="hero-content">
 
-        <!-- Divisor vertical decorativo -->
-        <div class="hero-divider-line anim-fade anim-delay-2" aria-hidden="true"></div>
+      <p class="hero-eyebrow anim-fade anim-delay-1">
+        Bogotá · Del Septimazo a la Plaza de Bolívar
+      </p>
 
-        <!-- Columna derecha: Texto descriptivo -->
-        <div class="hero-right anim-fade-up anim-delay-2">
-          <p class="hero-body">
-            La <strong>Carrera Séptima</strong> es mucho más que la arteria principal
-            de Bogotá. Es una línea del tiempo viva que conecta el 
-            <strong>Museo Nacional</strong> con la <strong>Plaza de Bolívar</strong>,
-            pasando por escenas de independencia, tragedia, modernización y cultura.
-          </p>
+      <h1 class="hero-title anim-fade-up anim-delay-2">
+        La Séptima:<br/><em>Ayer y Hoy</em>
+      </h1>
 
-          <div class="hero-facts">
-            <div class="hero-fact-item">
-              10 puntos históricos documentados en el recorrido
-            </div>
-            <div class="hero-fact-item">
-              Más de 400 años de historia bogotana
-            </div>
-            <div class="hero-fact-item">
-              Del Museo Nacional a la Plaza de Bolívar
-            </div>
-            <div class="hero-fact-item">
-              Marcadores interactivos con contexto histórico
-            </div>
-          </div>
-        </div>
+      <p class="hero-sub anim-fade-up anim-delay-3">
+        Una calle que guarda cinco siglos de memoria viva.<br/>
+        Caminala. Escuchala. Recordala.
+      </p>
+
+      <!-- Mini estadísticas en línea dentro del hero -->
+      <div class="hero-stats anim-fade anim-delay-4" aria-label="Datos del proyecto">
+        <div class="hs-item"><span class="hs-num">18</span><span class="hs-label">puntos</span></div>
+        <div class="hs-sep" aria-hidden="true">·</div>
+        <div class="hs-item"><span class="hs-num">+500</span><span class="hs-label">años</span></div>
+        <div class="hs-sep" aria-hidden="true">·</div>
+        <div class="hs-item"><span class="hs-num">3 km</span><span class="hs-label">de historia</span></div>
+        <div class="hs-sep" aria-hidden="true">·</div>
+        <div class="hs-item"><span class="hs-num">1539</span><span class="hs-label">fundación</span></div>
       </div>
 
-      <!-- Botón principal CTA -->
-      <div class="hero-cta-wrap anim-fade-up anim-delay-4">
-        <a href="recorrido.html" class="btn-explore" aria-label="Ir al recorrido interactivo">
+      <!-- Botones de acción -->
+      <div class="hero-actions anim-fade-up anim-delay-5">
+
+        <!-- Botón principal → mapa interactivo -->
+        <a href="recorrido.html" class="btn-primary" id="btn-explorar" aria-label="Ir al mapa interactivo">
           <span>Explorar el Recorrido</span>
           <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
+
+        <!-- Botones secundarios (abren modales) -->
+        <div class="hero-btns-sec">
+          <button class="btn-sec" onclick="abrirModal('modal-origen')" aria-label="Cómo nació la Séptima">
+            ¿Cómo nació?
+          </button>
+          <button class="btn-sec" onclick="abrirModal('modal-memoria')" aria-label="Comparte tu memoria">
+            Comparte tu Memoria
+          </button>
+          <button class="btn-sec" onclick="abrirModal('modal-guia')" aria-label="Cómo funciona el recorrido">
+            ¿Cómo funciona?
+          </button>
+        </div>
+
       </div>
 
-    </section>
-
-    <!-- ============================================================
-         BANDA DE ESTADÍSTICAS
-         ============================================================ -->
-    <aside class="info-strip anim-fade anim-delay-5">
-      <div class="info-strip-inner">
-        <div class="info-stat">
-          <span class="info-stat-num">10</span>
-          <span class="info-stat-label">Puntos Históricos</span>
-        </div>
-        <div class="info-stat">
-          <span class="info-stat-num">4</span>
-          <span class="info-stat-label">Siglos de Historia</span>
-        </div>
-        <div class="info-stat">
-          <span class="info-stat-num">5 km</span>
-          <span class="info-stat-label">Recorrido Virtual</span>
-        </div>
-        <div class="info-stat">
-          <span class="info-stat-num">1539</span>
-          <span class="info-stat-label">Fundación de Bogotá</span>
-        </div>
+      <!-- Redes sociales integradas al hero -->
+      <!-- Reemplaza href="#" con tus URLs reales -->
+      <div class="hero-redes anim-fade anim-delay-6" aria-label="Redes sociales">
+        <a href="#" class="red-btn" aria-label="Instagram del proyecto" rel="noopener" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="#" class="red-btn" aria-label="TikTok del proyecto" rel="noopener" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          TikTok
+        </a>
+        <a href="#" class="red-btn" aria-label="YouTube del proyecto" rel="noopener" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          YouTube
+        </a>
       </div>
-    </aside>
-  </main>
+
+    </div><!-- /.hero-content -->
+
+    <!-- Flecha de scroll hacia la galería -->
+    <div class="hero-scroll-hint anim-fade anim-delay-6" aria-hidden="true">
+      <span class="scroll-label">Ver galería</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+
+  </section><!-- /.hero -->
+
 
   <!-- ============================================================
-       PIE DE PÁGINA
+       GALERÍA MOSAICO — sección debajo del hero
+       INSTRUCCIÓN: reemplaza cada src="img/septima_X.jpg" con tu imagen
+       ============================================================ -->
+  <section class="galeria-section" id="galeria" aria-label="Galería visual de la Séptima">
+
+    <div class="galeria-header">
+      <p class="galeria-eyebrow">Archivo visual</p>
+      <h2 class="galeria-titulo">La Séptima en imágenes</h2>
+    </div>
+
+    <div class="galeria-mosaico">
+      <!-- Pieza grande — IMAGEN 1 -->
+      <div class="gm-item gm-grande">
+        <img src="img/septima_1.jpg" alt="La Séptima — imagen 1" loading="lazy" />
+        <div class="gm-caption">Calle Real del Comercio, siglo XIX</div>
+      </div>
+      <!-- IMAGEN 2 -->
+      <div class="gm-item">
+        <img src="img/septima_2.jpg" alt="La Séptima — imagen 2" loading="lazy" />
+        <div class="gm-caption">El Bogotazo, 1948</div>
+      </div>
+      <!-- IMAGEN 3 -->
+      <div class="gm-item">
+        <img src="img/septima_3.jpg" alt="La Séptima — imagen 3" loading="lazy" />
+        <div class="gm-caption">El Septimazo</div>
+      </div>
+      <!-- VIDEO — INSTRUCCIÓN: reemplaza video/septima_video_1.mp4 con tu archivo -->
+      <div class="gm-item gm-video-wrap">
+        <video
+          class="gm-video"
+          src="video/septima_video_1.mp4"
+          muted loop autoplay playsinline preload="metadata"
+          aria-label="Video de la Séptima"
+        ></video>
+        <div class="gm-caption gm-caption--video">▶ La Séptima en movimiento</div>
+      </div>
+      <!-- IMAGEN 4 — vertical -->
+      <div class="gm-item gm-tall">
+        <img src="img/septima_4.jpg" alt="La Séptima — imagen 4" loading="lazy" />
+        <div class="gm-caption">Templos coloniales</div>
+      </div>
+      <!-- IMAGEN 5 -->
+      <div class="gm-item">
+        <img src="img/septima_5.jpg" alt="La Séptima — imagen 5" loading="lazy" />
+        <div class="gm-caption">Plaza de Bolívar hoy</div>
+      </div>
+      <!-- IMAGEN 6 -->
+      <div class="gm-item">
+        <img src="img/septima_6.jpg" alt="La Séptima — imagen 6" loading="lazy" />
+        <div class="gm-caption">Arte urbano</div>
+      </div>
+    </div>
+
+    <div class="galeria-cta">
+      <a href="recorrido.html" class="btn-primary btn-primary--dark">
+        <span>Entrar al mapa interactivo</span>
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
        ============================================================ -->
   <footer class="site-footer">
-    <p>
-      La Séptima: Ayer y Hoy &mdash; Proyecto académico de historia urbana &middot;
-
-      </a>
-    </p>
+    <p>La Séptima: Ayer y Hoy &mdash; Proyecto transmedia · Bogotá, Colombia</p>
   </footer>
+
+
+  <!-- ============================================================
+       MODALES
+       Cada modal tiene: backdrop (clic cierra), modal-box, botón ✕
+       ============================================================ -->
+
+  <!-- MODAL: ¿Cómo nació la Séptima? -->
+  <div id="modal-origen" class="modal" role="dialog" aria-modal="true" aria-labelledby="mo-title">
+    <div class="modal-backdrop" onclick="cerrarModal('modal-origen')"></div>
+    <div class="modal-box modal-box--hist">
+      <button class="modal-close" onclick="cerrarModal('modal-origen')" aria-label="Cerrar">✕</button>
+      <div class="modal-header">
+        <p class="modal-eyebrow">Contexto histórico</p>
+        <h2 class="modal-title" id="mo-title">¿Cómo nació<br/>la Séptima?</h2>
+      </div>
+      <div class="modal-body modal-cols">
+        <div class="mc-texto">
+          <p>Antes de llamarse Carrera Séptima, esta vía era la <strong>Calle Real del Comercio</strong>, el eje central de la ciudad que los españoles fundaron en 1538. Fue ruta de procesiones, mercados, entierros de Estado y entradas triunfales.</p>
+          <p>Con la independencia de 1810 y la modernización del siglo XIX, la calle fue renombrada y ensanchada. El <strong>tranvía eléctrico en 1910</strong> la convirtió en el corredor más moderno del país: cafés literarios, hoteles de lujo y librerías definieron su perfil.</p>
+          <p>En el siglo XX, el <strong>Bogotazo de 1948</strong> y la violencia política transformaron radicalmente su fisonomía. Hoy la Séptima es a la vez memoria y espejo: refleja todo lo que Bogotá ha sido y sigue siendo.</p>
+        </div>
+        <ul class="modal-timeline">
+          <li><span class="tl-year">Siglo XVI</span><span class="tl-event">Calle Real del Comercio. Eje de la ciudad colonial española.</span></li>
+          <li><span class="tl-year">1810</span><span class="tl-event">La disputa del florero desata el proceso de Independencia.</span></li>
+          <li><span class="tl-year">1884</span><span class="tl-event">Primeros tranvías de mulas por la Séptima.</span></li>
+          <li><span class="tl-year">1910</span><span class="tl-event">Tranvía eléctrico. Modernización del centro histórico.</span></li>
+          <li><span class="tl-year">1948</span><span class="tl-event">Bogotazo: el asesinato de Gaitán destruye gran parte del centro.</span></li>
+          <li><span class="tl-year">1985</span><span class="tl-event">Toma del Palacio de Justicia. Uno de los episodios más trágicos.</span></li>
+          <li><span class="tl-year">Hoy</span><span class="tl-event">El Septimazo reúne cada semana a más de cien artistas callejeros.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Comparte tu Memoria -->
+  <div id="modal-memoria" class="modal" role="dialog" aria-modal="true" aria-labelledby="mm-title">
+    <div class="modal-backdrop" onclick="cerrarModal('modal-memoria')"></div>
+    <div class="modal-box modal-box--memoria">
+      <button class="modal-close" onclick="cerrarModal('modal-memoria')" aria-label="Cerrar">✕</button>
+      <div class="modal-header">
+        <p class="modal-eyebrow">Archivo Vivo · Proyecto Transmedia</p>
+        <h2 class="modal-title" id="mm-title">Comparte tu Memoria</h2>
+        <p class="modal-sub">La Séptima también es tuya. Tu historia, tu imagen, tu recuerdo de esta calle hace parte del archivo vivo de Bogotá.</p>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario visual — conectar a backend cuando esté listo -->
+        <div class="mem-form">
+          <div class="mem-row">
+            <div class="mem-group">
+              <label for="mem-nombre">Tu nombre</label>
+              <input type="text" id="mem-nombre" name="nombre" placeholder="¿Cómo te llamas?" autocomplete="off" />
+            </div>
+            <div class="mem-group">
+              <label for="mem-lugar">Lugar recordado</label>
+              <input type="text" id="mem-lugar" name="lugar" placeholder="ej. Parque Santander…" autocomplete="off" />
+            </div>
+          </div>
+          <div class="mem-group">
+            <label for="mem-historia">Tu historia</label>
+            <textarea id="mem-historia" name="historia" placeholder="Cuéntanos qué pasó, qué viste, qué sentiste en la Séptima…"></textarea>
+          </div>
+          <div class="mem-group">
+            <label>Imagen (opcional)</label>
+            <div class="mem-upload" role="button" tabindex="0" aria-label="Subir imagen">
+              <span class="mem-upload-icon">📷</span>
+              <span>Arrastra una foto o haz clic aquí</span>
+            </div>
+          </div>
+          <div class="mem-footer">
+            <button type="button" class="btn-primary">Compartir mi Memoria ✦</button>
+            <p class="mem-nota">* Próximamente las memorias aparecerán en el mapa.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ¿Cómo funciona el recorrido? -->
+  <div id="modal-guia" class="modal" role="dialog" aria-modal="true" aria-labelledby="mg-title">
+    <div class="modal-backdrop" onclick="cerrarModal('modal-guia')"></div>
+    <div class="modal-box modal-box--guia">
+      <button class="modal-close" onclick="cerrarModal('modal-guia')" aria-label="Cerrar">✕</button>
+      <div class="modal-header">
+        <p class="modal-eyebrow">Instrucciones</p>
+        <h2 class="modal-title" id="mg-title">¿Cómo funciona<br/>el recorrido?</h2>
+      </div>
+      <div class="modal-body">
+        <div class="guia-grid">
+          <div class="guia-card">
+            <div class="guia-icon">🗺️</div>
+            <h3>Explorar el mapa</h3>
+            <p>Haz clic en cualquier <strong>pin dorado</strong> sobre el mapa para abrir la historia de ese lugar. Usa el panel lateral para ver todos los puntos.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">📍</div>
+            <h3>Los puntos históricos</h3>
+            <p>Cada punto incluye texto histórico, dato curioso, fuente y galería de imágenes. Navega con los botones Anterior y Siguiente.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">🚶</div>
+            <h3>Street View</h3>
+            <p>Arrastra el muñequito naranja al mapa para recorrer la calle virtualmente. Los marcadores dorados seguirán visibles.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">🎵</div>
+            <h3>Playlist del recorrido</h3>
+            <p>Al entrar al mapa se activa música ambiental. Usa el control flotante (esquina inferior derecha) para pausar o cambiar canción.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">📱</div>
+            <h3>En móvil</h3>
+            <p>El mapa funciona en teléfono y tablet. Para mejor experiencia en Street View, rota a modo horizontal.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">✦</div>
+            <h3>Empieza aquí</h3>
+            <p>El recorrido va del <strong>Septimazo</strong> (punto 1) hasta la <strong>Plaza de Bolívar</strong> (punto 18).</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer-cta">
+        <a href="recorrido.html" class="btn-primary">Comenzar el Recorrido →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script>
+    /* ── Modales ─────────────────────────────────────────────── */
+    function abrirModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.add('modal--open');
+      document.body.style.overflow = 'hidden';
+      // Foco al modal para accesibilidad
+      const firstBtn = m.querySelector('button, a, input');
+      if (firstBtn) setTimeout(() => firstBtn.focus(), 50);
+    }
+
+    function cerrarModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.remove('modal--open');
+      document.body.style.overflow = '';
+    }
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal--open').forEach(m => {
+          m.classList.remove('modal--open');
+        });
+        document.body.style.overflow = '';
+      }
+    });
+
+    /* ── Marca inicio de playlist al ir al recorrido ─────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('btn-explorar');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          sessionStorage.setItem('iniciarPlaylist', '1');
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>

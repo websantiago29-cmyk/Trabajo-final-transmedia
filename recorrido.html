@@ -5,41 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Mapa interactivo del recorrido histórico por la Carrera Séptima de Bogotá." />
   <title>Recorrido — La Séptima: Ayer y Hoy</title>
-
-  <!-- Estilos principales -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- ============================================================
-       ESTILOS ESPECÍFICOS DEL INFOWINDOW (Google Maps inyecta en <head>)
-       ============================================================ -->
-  <style>
-    /* Anula estilos por defecto del InfoWindow de Google Maps */
-    .gm-style .gm-style-iw-c {
-      padding: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: 0 6px 28px rgba(30,26,20,0.5) !important;
-      border: 2px solid #c8a84b !important;
-      max-width: 300px !important;
-    }
-    .gm-style .gm-style-iw-d {
-      overflow: hidden !important;
-      padding: 0 !important;
-    }
-    .gm-style .gm-style-iw-t::after {
-      background: #c8a84b !important;
-    }
-    /* Botón de cierre del InfoWindow */
-    .gm-style .gm-ui-hover-effect {
-      top: 4px !important;
-      right: 4px !important;
-      opacity: 0.6;
-    }
-    .gm-style .gm-ui-hover-effect img {
-      filter: invert(1);
-    }
-  </style>
 </head>
-
 <body class="recorrido-body">
 
   <!-- ============================================================
@@ -53,23 +20,25 @@
 
     <div class="topbar-nav">
 
-      <!-- Botón: activar/desactivar marcadores -->
       <button
         id="btn-toggle"
         class="topbar-btn topbar-btn--toggle"
-        aria-label="Mostrar u ocultar puntos históricos"
-        title="Activar / Desactivar puntos">
-        <span>👁</span>
-        <span>Ocultar Puntos</span>
+        aria-label="Mostrar u ocultar puntos históricos">
+        <span aria-hidden="true">👁</span>
+        <span class="btn-toggle-label">Ocultar Puntos</span>
       </button>
 
-      <!-- Botón: volver al inicio -->
-      <a
-        href="index.html"
-        class="topbar-btn topbar-btn--home"
-        aria-label="Volver a la página de inicio"
-        title="Inicio">
-        <span>←</span>
+      <!-- Botón de ayuda / guía — también disponible en el mapa -->
+      <button
+        class="topbar-btn topbar-btn--help"
+        onclick="abrirModalGuia()"
+        aria-label="Ver cómo funciona el recorrido">
+        <span aria-hidden="true">?</span>
+        <span>Ayuda</span>
+      </button>
+
+      <a href="index.html" class="topbar-btn topbar-btn--home" aria-label="Volver al inicio">
+        <span aria-hidden="true">←</span>
         <span>Inicio</span>
       </a>
 
@@ -77,49 +46,113 @@
   </nav>
 
   <!-- ============================================================
-       ÁREA PRINCIPAL DEL MAPA
+       ÁREA DEL MAPA
        ============================================================ -->
   <div class="map-wrapper">
 
-    <!-- Contenedor del mapa (Google Maps se adjunta aquí) -->
+    <!-- Google Maps se adjunta aquí -->
     <div id="map" role="application" aria-label="Mapa interactivo de la Carrera Séptima"></div>
 
-    <!-- Panel lateral con lista de puntos históricos -->
+    <!-- Panel lateral — lista de puntos -->
     <aside id="side-panel" class="side-panel" aria-label="Lista de puntos históricos">
-
       <div class="side-panel-header">
         <span class="side-panel-title">📍 Puntos del Recorrido</span>
-        <button id="btn-panel-close" class="panel-close" aria-label="Cerrar panel">✕</button>
+        <button id="btn-panel-close" class="panel-close" aria-label="Cerrar lista">✕</button>
       </div>
-
-      <!-- La lista se genera dinámicamente desde main.js -->
+      <!-- Ítems generados por JS (construirPanelLista) -->
       <div id="panel-list" class="panel-list" role="list"></div>
-
     </aside>
 
-    <!-- Botón flotante para abrir el panel lateral -->
-    <button
-      id="btn-panel"
-      class="fab-panel"
-      aria-label="Ver lista de puntos históricos"
-      title="Lista de puntos">
-      ☰ Lista de Puntos
+    <!-- Botón flotante para abrir la lista de puntos -->
+    <button id="btn-panel" class="fab-panel" aria-label="Ver lista de puntos">
+      <span aria-hidden="true">☰</span> Lista de Puntos
     </button>
 
-  </div>
+  </div><!-- /.map-wrapper -->
+
 
   <!-- ============================================================
-       SCRIPTS
+       MODAL DE PUNTO HISTÓRICO — flotante centrado
+       El contenido se inyecta desde main.js (abrirModalPunto)
        ============================================================ -->
+  <div id="modal-punto" class="modal modal-punto" role="dialog" aria-modal="true" aria-labelledby="mp-title">
+    <div class="modal-backdrop" id="mp-backdrop"></div>
+    <div class="modal-box modal-box--punto" id="modal-punto-box">
+      <button class="modal-close" id="btn-punto-close" aria-label="Cerrar">✕</button>
+      <!-- Contenido inyectado por JS -->
+      <div id="modal-punto-content"></div>
+    </div>
+  </div>
 
-  <!-- 1. Datos de los puntos históricos (debe cargarse antes de main.js) -->
+
+  <!-- ============================================================
+       MODAL DE GUÍA — disponible desde el botón Ayuda del mapa
+       ============================================================ -->
+  <div id="modal-guia-mapa" class="modal" role="dialog" aria-modal="true" aria-labelledby="mgm-title">
+    <div class="modal-backdrop" onclick="cerrarModalGuia()"></div>
+    <div class="modal-box modal-box--guia">
+      <button class="modal-close" onclick="cerrarModalGuia()" aria-label="Cerrar">✕</button>
+      <div class="modal-header">
+        <p class="modal-eyebrow">Instrucciones</p>
+        <h2 class="modal-title" id="mgm-title">¿Cómo funciona<br/>el recorrido?</h2>
+      </div>
+      <div class="modal-body">
+        <div class="guia-grid">
+          <div class="guia-card">
+            <div class="guia-icon">🗺️</div>
+            <h3>Explorar el mapa</h3>
+            <p>Haz clic en cualquier <strong>pin dorado</strong> para abrir la historia de ese lugar. Usa el panel lateral para ver todos los puntos.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">📍</div>
+            <h3>Los puntos históricos</h3>
+            <p>Cada punto incluye texto histórico, dato curioso, fuente y galería. Navega con los botones Anterior y Siguiente.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">🚶</div>
+            <h3>Street View</h3>
+            <p>Arrastra el muñequito naranja al mapa para recorrer la calle. Los marcadores seguirán visibles.</p>
+          </div>
+          <div class="guia-card">
+            <div class="guia-icon">🎵</div>
+            <h3>Playlist</h3>
+            <p>Usa el control flotante (esquina inferior derecha) para pausar o cambiar la canción del recorrido.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       REPRODUCTOR DE PLAYLIST — control flotante
+       INSTRUCCIÓN: agrega tus archivos de audio en el array PLAYLIST
+       dentro de main.js (al principio del archivo)
+       ============================================================ -->
+  <div id="playlist-player" class="playlist-player" aria-label="Reproductor de música del recorrido">
+    <button id="pl-prev" class="pl-btn" aria-label="Canción anterior">‹</button>
+    <button id="pl-play" class="pl-btn pl-btn--play" aria-label="Reproducir / pausar">
+      <span id="pl-play-icon">▶</span>
+    </button>
+    <button id="pl-next" class="pl-btn" aria-label="Siguiente canción">›</button>
+    <div class="pl-info">
+      <span id="pl-track-name" class="pl-name">La Séptima</span>
+      <div class="pl-bar"><div id="pl-progress" class="pl-progress"></div></div>
+    </div>
+    <button id="pl-mute" class="pl-btn pl-btn--mute" aria-label="Silenciar / activar sonido">🔊</button>
+  </div>
+
+
+  <!-- ============================================================
+       SCRIPTS — orden obligatorio:
+         1. puntos.js  → define PUNTOS_HISTORICOS
+         2. main.js    → define initMap() + lógica
+         3. Google Maps → llama a initMap()
+       ============================================================ -->
   <script src="puntos.js"></script>
-
-  <!-- 2. Lógica principal del mapa -->
   <script src="main.js"></script>
-
-
- <script async defer
+  <script
+    async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxyoS1q03vlv5M0g1GI2xAXUEQry4l6ho&callback=initMap&language=es&region=CO">
   </script>
 

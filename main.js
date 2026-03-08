@@ -1,273 +1,293 @@
 /**
  * main.js — La Séptima: Ayer y Hoy
- * Lógica principal del mapa interactivo.
- * Maneja marcadores, InfoWindows, panel lateral y controles.
+ * ─────────────────────────────────
+ * - Mapa con marcadores grandes y visibles (incluso en Street View)
+ * - Modal flotante centrado para cada punto histórico (no panel inferior)
+ * - Playlist de audio con controles flotantes
+ * - Panel lateral de lista de puntos
+ *
+ * INSTRUCCIÓN PLAYLIST:
+ *   Agrega tus archivos de audio en el array PLAYLIST abajo.
+ *   Ejemplo: { titulo: 'Nombre canción', src: 'audio/cancion_1.mp3' }
  */
+
+/* ================================================================
+   PLAYLIST — agrega tus canciones aquí
+   Reemplaza los src con tus archivos de audio reales
+   ================================================================ */
+const PLAYLIST = [
+  { titulo: 'Canela - Cesar Mora',     src: 'audio/cancion_1.mp3' },
+  { titulo: 'La Derecha - El Puñal',         src: 'audio/cancion_2.mp3' },
+  { titulo: 'La gata golosa - Fulgencio García',             src: 'audio/cancion_3.mp3' },
+    { titulo: 'La Calle Real',             src: 'audio/cancion_4.mp3' },
+      { titulo: 'La Calle Real',             src: 'audio/cancion_3.mp3' }
+];
 
 /* ================================================================
    ESTADO GLOBAL
    ================================================================ */
 let map;
-let markers = [];
-let infoWindows = [];
-let activeInfoWindow = null;
+let markers       = [];
 let markersVisible = true;
-let panelOpen = false;
+let panelListOpen  = false;
+let puntoActivo    = null;
+
+// Playlist state
+let audioElement   = null;
+let playlistIndex  = 0;
+let isPlaying      = false;
 
 /* ================================================================
-   ESTILOS PERSONALIZADOS DEL MAPA (estética sepia/histórica)
+   ESTILOS DEL MAPA — paleta sepia/histórica
    ================================================================ */
 const MAP_STYLES = [
-  { elementType: "geometry",        stylers: [{ color: "#ebe3d5" }] },
-  { elementType: "labels.text.fill",stylers: [{ color: "#523735" }] },
-  { elementType: "labels.text.stroke",stylers: [{ color: "#f5f1eb" }] },
-  {
-    featureType: "administrative",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#c9b2a6" }]
-  },
-  {
-    featureType: "administrative.land_parcel",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#dcd2be" }]
-  },
-  {
-    featureType: "administrative.land_parcel",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#ae9e90" }]
-  },
-  {
-    featureType: "landscape.natural",
-    elementType: "geometry",
-    stylers: [{ color: "#dfd2ae" }]
-  },
-  {
-    featureType: "poi",
-    elementType: "geometry",
-    stylers: [{ color: "#dfd2ae" }]
-  },
-  {
-    featureType: "poi",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#93817c" }]
-  },
-  {
-    featureType: "poi.park",
-    elementType: "geometry.fill",
-    stylers: [{ color: "#a5b076" }]
-  },
-  {
-    featureType: "poi.park",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#447530" }]
-  },
-  {
-    featureType: "road",
-    elementType: "geometry",
-    stylers: [{ color: "#f5f1eb" }]
-  },
-  {
-    featureType: "road.arterial",
-    elementType: "geometry",
-    stylers: [{ color: "#fdfcf8" }]
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry",
-    stylers: [{ color: "#f8c967" }]
-  },
-  {
-    featureType: "road.highway",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#e9bc62" }]
-  },
-  {
-    featureType: "road.highway.controlled_access",
-    elementType: "geometry",
-    stylers: [{ color: "#e98d58" }]
-  },
-  {
-    featureType: "road.highway.controlled_access",
-    elementType: "geometry.stroke",
-    stylers: [{ color: "#db8555" }]
-  },
-  {
-    featureType: "road.local",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#806b63" }]
-  },
-  {
-    featureType: "transit.line",
-    elementType: "geometry",
-    stylers: [{ color: "#dfd2ae" }]
-  },
-  {
-    featureType: "transit.line",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#8f7d77" }]
-  },
-  {
-    featureType: "transit.line",
-    elementType: "labels.text.stroke",
-    stylers: [{ color: "#ebe3cd" }]
-  },
-  {
-    featureType: "transit.station",
-    elementType: "geometry",
-    stylers: [{ color: "#dfd2ae" }]
-  },
-  {
-    featureType: "water",
-    elementType: "geometry.fill",
-    stylers: [{ color: "#b9d3c2" }]
-  },
-  {
-    featureType: "water",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#92998d" }]
-  }
+  { elementType: 'geometry',          stylers: [{ color: '#ebe3d5' }] },
+  { elementType: 'labels.text.fill',  stylers: [{ color: '#523735' }] },
+  { elementType: 'labels.text.stroke',stylers: [{ color: '#f5f1eb' }] },
+  { featureType: 'administrative',    elementType: 'geometry.stroke',     stylers: [{ color: '#c9b2a6' }] },
+  { featureType: 'landscape.natural', elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
+  { featureType: 'poi',               elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
+  { featureType: 'poi',               elementType: 'labels.text.fill',    stylers: [{ color: '#93817c' }] },
+  { featureType: 'poi.park',          elementType: 'geometry.fill',       stylers: [{ color: '#a5b076' }] },
+  { featureType: 'poi.park',          elementType: 'labels.text.fill',    stylers: [{ color: '#447530' }] },
+  { featureType: 'road',              elementType: 'geometry',            stylers: [{ color: '#f5f1eb' }] },
+  { featureType: 'road.arterial',     elementType: 'geometry',            stylers: [{ color: '#fdfcf8' }] },
+  { featureType: 'road.highway',      elementType: 'geometry',            stylers: [{ color: '#f8c967' }] },
+  { featureType: 'road.highway',      elementType: 'geometry.stroke',     stylers: [{ color: '#e9bc62' }] },
+  { featureType: 'road.local',        elementType: 'labels.text.fill',    stylers: [{ color: '#806b63' }] },
+  { featureType: 'transit.line',      elementType: 'geometry',            stylers: [{ color: '#dfd2ae' }] },
+  { featureType: 'water',             elementType: 'geometry.fill',       stylers: [{ color: '#b9d3c2' }] },
+  { featureType: 'water',             elementType: 'labels.text.fill',    stylers: [{ color: '#92998d' }] }
 ];
 
 /* ================================================================
-   SVG DE MARCADOR PERSONALIZADO
+   ÍCONO SVG DEL MARCADOR
+   Más grande (42×54px) para mejor visibilidad en Street View
    ================================================================ */
-function crearIconoMarcador(numero) {
+function crearIcono(numero, activo) {
+  const bg     = activo ? '#c8a84b' : '#1c1810';
+  const numCol = activo ? '#1c1810' : '#e8c96a';
+  const ring   = activo ? 'rgba(200,168,75,0.4)' : 'rgba(200,168,75,0.15)';
+
   const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="46" viewBox="0 0 36 46">
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="56" viewBox="0 0 44 56">
       <defs>
-        <filter id="shadow" x="-30%" y="-20%" width="160%" height="160%">
-          <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(30,26,20,0.5)"/>
+        <filter id="s" x="-35%" y="-20%" width="170%" height="170%">
+          <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(10,8,4,0.65)"/>
         </filter>
       </defs>
-      <path filter="url(#shadow)"
-        d="M18 2 C9 2 2 9 2 18 C2 30 18 44 18 44 C18 44 34 30 34 18 C34 9 27 2 18 2 Z"
-        fill="#1e1a14" stroke="#c8a84b" stroke-width="2"/>
-      <circle cx="18" cy="17" r="10" fill="#c8a84b" opacity="0.15"/>
-      <text x="18" y="22" text-anchor="middle"
+      <!-- Pin shape — más grande y visible -->
+      <path filter="url(#s)"
+        d="M22 2 C11 2 2 11 2 22 C2 36 22 54 22 54 C22 54 42 36 42 22 C42 11 33 2 22 2 Z"
+        fill="${bg}" stroke="#c8a84b" stroke-width="2.5"/>
+      <!-- Halo interior -->
+      <circle cx="22" cy="21" r="12" fill="${ring}"/>
+      <!-- Número -->
+      <text x="22" y="27"
+        text-anchor="middle"
         font-family="'Playfair Display', Georgia, serif"
-        font-weight="900" font-size="13"
-        fill="#e8c96a">${numero}</text>
+        font-weight="900"
+        font-size="${numero > 9 ? '11' : '13'}"
+        fill="${numCol}">${numero}</text>
     </svg>
   `.trim();
 
   return {
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
-    scaledSize: new google.maps.Size(36, 46),
-    anchor: new google.maps.Point(18, 44)
+    url:         'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    scaledSize:  new google.maps.Size(44, 56),
+    anchor:      new google.maps.Point(22, 54)
   };
 }
 
 /* ================================================================
-   CONTENIDO HTML DEL INFOWINDOW
-   ================================================================ */
-function crearContenidoIW(punto) {
-  return `
-    <div class="iw-container">
-      <div class="iw-header">
-        <div class="iw-number">Punto ${punto.id} de ${PUNTOS_HISTORICOS.length}</div>
-        <div class="iw-title">${punto.titulo}</div>
-      </div>
-      <div class="iw-body">
-        <div class="iw-date">📅 ${punto.fecha}</div>
-        <div class="iw-desc">${punto.descripcion}</div>
-        <div class="iw-tag">${punto.emoji} ${punto.categoria}</div>
-      </div>
-    </div>
-  `;
-}
-
-/* ================================================================
-   INICIALIZACIÓN DEL MAPA (callback de Google Maps API)
+   INICIALIZACIÓN DEL MAPA — callback de Google Maps
    ================================================================ */
 function initMap() {
 
-  // Centro: Mitad del recorrido Museo Nacional → Plaza de Bolívar
-  const centro = { lat: 4.6070, lng: -74.0630 };
+  // Centro del tramo: Septimazo → Plaza de Bolívar
+  const centro = { lat: 4.6040, lng: -74.0710 };
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: centro,
     zoom: 15,
     styles: MAP_STYLES,
-    mapTypeControl: false,
-    fullscreenControl: false,
-    streetViewControl: true,
-    zoomControl: true,
-    zoomControlOptions: {
-      position: google.maps.ControlPosition.RIGHT_CENTER
-    },
-    streetViewControlOptions: {
-      position: google.maps.ControlPosition.RIGHT_CENTER
-    }
+    mapTypeControl:      false,
+    fullscreenControl:   false,
+    streetViewControl:   true,
+    zoomControl:         true,
+    zoomControlOptions:  { position: google.maps.ControlPosition.RIGHT_CENTER },
+    streetViewControlOptions: { position: google.maps.ControlPosition.RIGHT_CENTER }
   });
 
-  // Crear polilínea del recorrido
-  const rutaCoordenadas = PUNTOS_HISTORICOS.map(p => ({ lat: p.lat, lng: p.lng }));
-  const rutaLinea = new google.maps.Polyline({
-    path: rutaCoordenadas,
-    geodesic: true,
-    strokeColor: '#c8a84b',
-    strokeOpacity: 0.6,
-    strokeWeight: 3,
-    map: map
+  // Polilínea del recorrido (línea dorada)
+  new google.maps.Polyline({
+    path:          PUNTOS_HISTORICOS.map(p => ({ lat: p.lat, lng: p.lng })),
+    geodesic:      true,
+    strokeColor:   '#c8a84b',
+    strokeOpacity: 0.65,
+    strokeWeight:  3,
+    map
   });
 
-  // Crear marcadores e InfoWindows para cada punto
+  // Crear marcadores
   PUNTOS_HISTORICOS.forEach((punto, index) => {
-
     const marker = new google.maps.Marker({
-      position: { lat: punto.lat, lng: punto.lng },
-      map: map,
-      title: punto.titulo,
-      icon: crearIconoMarcador(punto.id),
+      position:  { lat: punto.lat, lng: punto.lng },
+      map,
+      title:     punto.titulo,
+      icon:      crearIcono(punto.id, false),
       animation: google.maps.Animation.DROP,
-      zIndex: 100 + index
+      zIndex:    100 + index
     });
 
-    const infoWindow = new google.maps.InfoWindow({
-      content: crearContenidoIW(punto),
-      maxWidth: 300
-    });
+    // Clic → abrir modal del punto
+    marker.addListener('click', () => abrirModalPunto(index));
 
-    // Evento: clic en marcador
-    marker.addListener('click', () => {
-      // Cerrar InfoWindow activo si existe
-      if (activeInfoWindow) {
-        activeInfoWindow.close();
-      }
-      infoWindow.open(map, marker);
-      activeInfoWindow = infoWindow;
-
-      // Centrar mapa suavemente en el marcador
-      map.panTo(marker.getPosition());
-    });
-
-    // Hover: animación bounce
+    // Hover: bounce breve
     marker.addListener('mouseover', () => {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
+      if (puntoActivo !== index) marker.setAnimation(google.maps.Animation.BOUNCE);
     });
-    marker.addListener('mouseout', () => {
-      marker.setAnimation(null);
-    });
+    marker.addListener('mouseout', () => marker.setAnimation(null));
 
-    // Guardar referencias
     markers.push(marker);
-    infoWindows.push(infoWindow);
   });
 
-  // Cerrar InfoWindow al hacer clic en el mapa
-  map.addListener('click', () => {
-    if (activeInfoWindow) {
-      activeInfoWindow.close();
-      activeInfoWindow = null;
-    }
-  });
+  // Clic en el mapa vacío → cerrar modal
+  map.addListener('click', () => cerrarModalPunto());
 
   // Construir lista del panel lateral
   construirPanelLista();
+
+  // Inicializar playlist (puede no reproducirse hasta interacción del usuario)
+  iniciarPlaylist();
 }
 
 /* ================================================================
-   PANEL LATERAL
+   MODAL DEL PUNTO HISTÓRICO
+   ================================================================ */
+
+/** Genera el HTML de la media (galería o video) */
+function mediaHTML(punto) {
+  if (punto.video && punto.video.trim() !== '') {
+    const img = punto.imagenes && punto.imagenes[0]
+      ? `<img src="${punto.imagenes[0]}" alt="Imagen de ${punto.titulo}" class="punto-media-img" loading="lazy">`
+      : `<div class="punto-media-placeholder">📷 Imagen próximamente</div>`;
+    return `
+      <video class="punto-media-video" controls preload="metadata">
+        <source src="${punto.video}" type="video/mp4">
+      </video>
+      ${img}`;
+  }
+
+  const imgs = punto.imagenes && punto.imagenes.length > 0 ? punto.imagenes : [];
+  if (!imgs.length) {
+    return `<div class="punto-media-placeholder">📷 Imágenes próximamente</div>`;
+  }
+
+  return `<div class="punto-media-galeria">
+    ${imgs.map((src, i) => `
+      <img src="${src}" alt="Imagen ${i + 1} – ${punto.titulo}" class="punto-media-img" loading="lazy"
+           onerror="this.parentElement && (this.style.display='none')">`
+    ).join('')}
+  </div>`;
+}
+
+/** Abre el modal flotante para el punto en la posición `index` */
+function abrirModalPunto(index) {
+  const punto = PUNTOS_HISTORICOS[index];
+  if (!punto) return;
+
+  // Actualizar ícono activo/inactivo
+  if (puntoActivo !== null && markers[puntoActivo]) {
+    markers[puntoActivo].setIcon(crearIcono(PUNTOS_HISTORICOS[puntoActivo].id, false));
+    markers[puntoActivo].setZIndex(100 + puntoActivo);
+    markers[puntoActivo].setAnimation(null);
+  }
+  puntoActivo = index;
+  markers[index].setIcon(crearIcono(punto.id, true));
+  markers[index].setZIndex(999);
+  markers[index].setAnimation(null);
+
+  map.panTo(markers[index].getPosition());
+
+  // Párrafos del texto
+  const parrafos = punto.texto.split('\n\n')
+    .filter(p => p.trim())
+    .map(p => `<p>${p.trim()}</p>`)
+    .join('');
+
+  const datoCurioso = punto.datoCurioso
+    ? `<div class="punto-dato-curioso">
+        <div class="punto-dato-label">💡 Dato curioso</div>
+        <p>${punto.datoCurioso}</p>
+       </div>` : '';
+
+  const fuente = punto.fuente
+    ? `<div class="punto-fuente">Fuente: ${punto.fuente}</div>` : '';
+
+  // Botones de navegación prev/next
+  const prev = index > 0
+    ? `<button class="punto-nav-btn" onclick="abrirModalPunto(${index - 1})" title="${PUNTOS_HISTORICOS[index - 1].titulo}">← Anterior</button>`
+    : `<span class="punto-nav-btn punto-nav-btn--disabled">← Anterior</span>`;
+
+  const next = index < PUNTOS_HISTORICOS.length - 1
+    ? `<button class="punto-nav-btn" onclick="abrirModalPunto(${index + 1})" title="${PUNTOS_HISTORICOS[index + 1].titulo}">Siguiente →</button>`
+    : `<span class="punto-nav-btn punto-nav-btn--disabled">Siguiente →</span>`;
+
+  // Inyectar contenido
+  document.getElementById('modal-punto-content').innerHTML = `
+    <div class="punto-modal-cabecera">
+      <div class="punto-meta-top">
+        <span class="punto-num">Punto ${punto.id} <span class="punto-total">/ ${PUNTOS_HISTORICOS.length}</span></span>
+        <span class="punto-categoria">${punto.emoji} ${punto.categoria}</span>
+      </div>
+      <h2 class="punto-titulo" id="mp-title">${punto.titulo}</h2>
+      <div class="punto-periodo">${punto.periodo}</div>
+      <div class="punto-subtitulo">${punto.subtitulo}</div>
+    </div>
+
+    <div class="punto-divider"></div>
+
+    <div class="punto-modal-body">
+      <div class="punto-col-media">${mediaHTML(punto)}</div>
+      <div class="punto-col-texto">
+        <div class="punto-texto">${parrafos}</div>
+        ${datoCurioso}
+        ${fuente}
+      </div>
+    </div>
+
+    <div class="punto-modal-nav">
+      ${prev}
+      <button class="punto-nav-btn punto-nav-btn--lista" onclick="togglePanelLista(true)">☰ Lista</button>
+      ${next}
+    </div>
+  `;
+
+  // Abrir modal
+  const modal = document.getElementById('modal-punto');
+  if (modal) {
+    modal.classList.add('modal--open');
+    // Asegurar scroll al top del contenido
+    const box = document.getElementById('modal-punto-box');
+    if (box) box.scrollTop = 0;
+  }
+}
+
+/** Cierra el modal del punto */
+function cerrarModalPunto() {
+  const modal = document.getElementById('modal-punto');
+  if (modal) modal.classList.remove('modal--open');
+
+  if (puntoActivo !== null && markers[puntoActivo]) {
+    markers[puntoActivo].setIcon(crearIcono(PUNTOS_HISTORICOS[puntoActivo].id, false));
+    markers[puntoActivo].setZIndex(100 + puntoActivo);
+  }
+  puntoActivo = null;
+}
+
+/* ================================================================
+   PANEL LATERAL — lista de puntos
    ================================================================ */
 function construirPanelLista() {
   const lista = document.getElementById('panel-list');
@@ -276,99 +296,204 @@ function construirPanelLista() {
   PUNTOS_HISTORICOS.forEach((punto, index) => {
     const item = document.createElement('div');
     item.className = 'panel-item';
+    item.setAttribute('role', 'listitem');
     item.innerHTML = `
       <div class="panel-item-num">${punto.id}</div>
       <div class="panel-item-info">
-        <div class="panel-item-title">${punto.emoji} ${punto.titulo}</div>
-        <div class="panel-item-year">${punto.fecha}</div>
-      </div>
-    `;
-    // Al hacer clic en el ítem del panel → ir al marcador
-    item.addEventListener('click', () => {
-      irAlPunto(index);
-    });
+        <div class="panel-item-title">${punto.titulo}</div>
+        <div class="panel-item-year">${punto.periodo}</div>
+      </div>`;
+    item.addEventListener('click', () => irAlPunto(index));
     lista.appendChild(item);
   });
 }
 
+/** Navega al marcador y abre su modal */
 function irAlPunto(index) {
-  const marker = markers[index];
-  const iw = infoWindows[index];
-  if (!marker || !iw) return;
-
-  // Cerrar panel en móvil al seleccionar punto
-  if (window.innerWidth < 768) {
-    togglePanel(false);
-  }
-
-  // Centrar y abrir InfoWindow
-  map.setCenter(marker.getPosition());
+  if (window.innerWidth < 900) togglePanelLista(false);
+  map.setCenter(markers[index].getPosition());
   map.setZoom(17);
+  abrirModalPunto(index);
+}
 
-  if (activeInfoWindow) activeInfoWindow.close();
-  iw.open(map, marker);
-  activeInfoWindow = iw;
-
-  // Animar marcador
-  marker.setAnimation(google.maps.Animation.BOUNCE);
-  setTimeout(() => marker.setAnimation(null), 1400);
+/** Abre/cierra el panel lateral de lista */
+function togglePanelLista(force) {
+  panelListOpen = force !== undefined ? force : !panelListOpen;
+  const panel = document.getElementById('side-panel');
+  if (panel) panel.classList.toggle('open', panelListOpen);
 }
 
 /* ================================================================
-   CONTROLES DE LA UI
+   MODAL DE GUÍA (en recorrido.html)
    ================================================================ */
+function abrirModalGuia() {
+  const m = document.getElementById('modal-guia-mapa');
+  if (m) {
+    m.classList.add('modal--open');
+    document.body.style.overflow = 'hidden';
+  }
+}
 
-/**
- * Activa/desactiva visibilidad de todos los marcadores.
- */
+function cerrarModalGuia() {
+  const m = document.getElementById('modal-guia-mapa');
+  if (m) {
+    m.classList.remove('modal--open');
+    document.body.style.overflow = '';
+  }
+}
+
+/* ================================================================
+   CONTROLES DEL MAPA
+   ================================================================ */
 function toggleMarcadores() {
   markersVisible = !markersVisible;
   markers.forEach(m => m.setVisible(markersVisible));
-
   const btn = document.getElementById('btn-toggle');
   if (btn) {
-    btn.textContent = markersVisible ? '👁 Ocultar Puntos' : '👁 Mostrar Puntos';
+    btn.querySelector('.btn-toggle-label').textContent =
+      markersVisible ? 'Ocultar Puntos' : 'Mostrar Puntos';
     btn.classList.toggle('active', !markersVisible);
   }
-
-  // Cerrar InfoWindow activa si se ocultan marcadores
-  if (!markersVisible && activeInfoWindow) {
-    activeInfoWindow.close();
-    activeInfoWindow = null;
-  }
-}
-
-/**
- * Abre o cierra el panel lateral.
- */
-function togglePanel(forceState) {
-  panelOpen = (forceState !== undefined) ? forceState : !panelOpen;
-  const panel = document.getElementById('side-panel');
-  if (panel) {
-    panel.classList.toggle('open', panelOpen);
-  }
+  if (!markersVisible) cerrarModalPunto();
 }
 
 /* ================================================================
-   INICIALIZACIÓN CUANDO EL DOM ESTÁ LISTO
+   PLAYLIST — reproductor de audio
+   ================================================================ */
+function iniciarPlaylist() {
+  if (!PLAYLIST.length) {
+    // No hay canciones: ocultar el player
+    const player = document.getElementById('playlist-player');
+    if (player) player.style.display = 'none';
+    return;
+  }
+
+  audioElement = new Audio();
+  audioElement.volume = 0.55;
+
+  // Si el usuario llegó desde "Explorar el recorrido", reproducir automáticamente
+  const autoplay = sessionStorage.getItem('iniciarPlaylist') === '1';
+  sessionStorage.removeItem('iniciarPlaylist');
+
+  cargarCancion(playlistIndex);
+
+  if (autoplay) {
+    reproducir();
+  }
+
+  // Avanzar automáticamente al terminar la canción
+  audioElement.addEventListener('ended', () => {
+    avanzarCancion(1);
+  });
+
+  // Actualizar barra de progreso
+  audioElement.addEventListener('timeupdate', actualizarProgreso);
+}
+
+function cargarCancion(index) {
+  if (!audioElement || !PLAYLIST[index]) return;
+  const cancion = PLAYLIST[index];
+  audioElement.src = cancion.src;
+  const nameEl = document.getElementById('pl-track-name');
+  if (nameEl) nameEl.textContent = cancion.titulo;
+  document.getElementById('pl-progress').style.width = '0%';
+}
+
+function reproducir() {
+  if (!audioElement) return;
+  audioElement.play().then(() => {
+    isPlaying = true;
+    actualizarBtnPlay();
+  }).catch(() => {
+    // El navegador bloquea autoplay sin interacción
+    isPlaying = false;
+    actualizarBtnPlay();
+  });
+}
+
+function pausar() {
+  if (!audioElement) return;
+  audioElement.pause();
+  isPlaying = false;
+  actualizarBtnPlay();
+}
+
+function togglePlay() {
+  isPlaying ? pausar() : reproducir();
+}
+
+function avanzarCancion(direccion) {
+  playlistIndex = (playlistIndex + direccion + PLAYLIST.length) % PLAYLIST.length;
+  cargarCancion(playlistIndex);
+  if (isPlaying) reproducir();
+}
+
+function actualizarBtnPlay() {
+  const icon = document.getElementById('pl-play-icon');
+  if (icon) icon.textContent = isPlaying ? '⏸' : '▶';
+}
+
+function actualizarProgreso() {
+  if (!audioElement || !audioElement.duration) return;
+  const pct = (audioElement.currentTime / audioElement.duration) * 100;
+  const bar = document.getElementById('pl-progress');
+  if (bar) bar.style.width = pct + '%';
+}
+
+// Toggle mute
+let isMuted = false;
+function toggleMute() {
+  if (!audioElement) return;
+  isMuted = !isMuted;
+  audioElement.muted = isMuted;
+  const btn = document.getElementById('pl-mute');
+  if (btn) btn.textContent = isMuted ? '🔇' : '🔊';
+}
+
+/* ================================================================
+   INICIALIZACIÓN DOM
    ================================================================ */
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Botón toggle de marcadores
+  // Toggle marcadores
   const btnToggle = document.getElementById('btn-toggle');
-  if (btnToggle) {
-    btnToggle.addEventListener('click', toggleMarcadores);
-  }
+  if (btnToggle) btnToggle.addEventListener('click', toggleMarcadores);
 
-  // Botón abrir panel
+  // Abrir lista
   const btnPanel = document.getElementById('btn-panel');
-  if (btnPanel) {
-    btnPanel.addEventListener('click', () => togglePanel());
-  }
+  if (btnPanel) btnPanel.addEventListener('click', () => togglePanelLista());
 
-  // Botón cerrar panel
+  // Cerrar lista
   const btnPanelClose = document.getElementById('btn-panel-close');
-  if (btnPanelClose) {
-    btnPanelClose.addEventListener('click', () => togglePanel(false));
-  }
+  if (btnPanelClose) btnPanelClose.addEventListener('click', () => togglePanelLista(false));
+
+  // Cerrar modal de punto
+  const btnPuntoClose = document.getElementById('btn-punto-close');
+  if (btnPuntoClose) btnPuntoClose.addEventListener('click', cerrarModalPunto);
+
+  // Backdrop del modal de punto
+  const mpBackdrop = document.getElementById('mp-backdrop');
+  if (mpBackdrop) mpBackdrop.addEventListener('click', cerrarModalPunto);
+
+  // Controles playlist
+  const btnPlay = document.getElementById('pl-play');
+  if (btnPlay) btnPlay.addEventListener('click', togglePlay);
+
+  const btnPrev = document.getElementById('pl-prev');
+  if (btnPrev) btnPrev.addEventListener('click', () => avanzarCancion(-1));
+
+  const btnNext = document.getElementById('pl-next');
+  if (btnNext) btnNext.addEventListener('click', () => avanzarCancion(1));
+
+  const btnMute = document.getElementById('pl-mute');
+  if (btnMute) btnMute.addEventListener('click', toggleMute);
+
+  // Escape cierra modales
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      cerrarModalPunto();
+      cerrarModalGuia();
+    }
+  });
+
 });
