@@ -301,16 +301,28 @@ function ocultarFrasesGrandes() {
 /* ================================================================
    MODAL DEL PUNTO HISTÓRICO
    ================================================================ */
+function placeholderDecorativo(punto, slotIdx) {
+  const v = (punto.id + slotIdx) % 5;
+  const variantes = [
+    `<span class="ph-ornamento">✦</span><p class="ph-texto">Imagen de archivo<br/>próximamente</p>`,
+    `<span class="ph-numero">${String(punto.id).padStart(2,'0')}</span><p class="ph-texto">Memoria visual<br/>en construcción</p>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="ph-icon"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="13" r="3"/></svg><p class="ph-texto">Fotografía de archivo<br/>próximamente</p>`,
+    `<p class="ph-cita">"La ciudad guarda<br/>sus imágenes"</p><span class="ph-ornamento ph-ornamento--sm">✦ ✦ ✦</span>`,
+    `<span class="ph-ornamento ph-ornamento--grande">VII</span><p class="ph-texto">Archivo visual<br/>en preparación</p>`
+  ];
+  return variantes[v];
+}
+
 function mediaHTML(punto) {
-  if (punto.video && punto.video.trim()) {
-    return `<video class="punto-media-video" controls preload="metadata">
-      <source src="${punto.video}" type="video/mp4">
-    </video>`;
-  }
-  const imgs = punto.imagenes && punto.imagenes.length ? punto.imagenes : [];
-  if (!imgs.length) return `<div class="punto-media-placeholder">📷 Imágenes próximamente</div>`;
-  return `<div class="punto-media-galeria">
-    ${imgs.map((src,i) => `<img src="${src}" alt="Imagen ${i+1} – ${punto.titulo}" class="punto-media-img" loading="lazy" onerror="this.style.display='none'">`).join('')}
+  const imgs = (punto.imagenes || []).filter(s => s && s.trim()).slice(0, 2);
+
+  const slot = (src, alt, idx) => src
+    ? `<div class="pm-slot"><img src="${src}" alt="${alt}" class="pm-img" loading="lazy"></div>`
+    : `<div class="pm-slot pm-slot--vacio">${placeholderDecorativo(punto, idx)}</div>`;
+
+  return `<div class="pm-galeria">
+    ${slot(imgs[0], punto.titulo + ' — imagen 1', 0)}
+    ${slot(imgs[1], punto.titulo + ' — imagen 2', 1)}
   </div>`;
 }
 
