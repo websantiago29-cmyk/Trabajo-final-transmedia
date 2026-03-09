@@ -84,15 +84,49 @@ const MAP_STYLES = [
 ];
 
 /* ================================================================
-   ÍCONO SVG — estrella + número
+   ÍCONO SVG — estrella + número (punto 1 especial)
    ================================================================ */
 function crearIcono(numero, activo) {
+
+  // ── PUNTO 1: pin más grande con "INICIO" ─────────────────────
+  if (numero === 1) {
+    const bg   = activo ? '#c8a84b' : '#0e0b06';
+    const star = activo ? '#0e0b06' : '#c8a84b';
+    const text = activo ? '#0e0b06' : '#f0d878';
+    const gId  = 'g1' + (activo ? 'a' : 'i');
+    const svg  = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="84" viewBox="0 0 64 84">
+      <defs>
+        <filter id="sh1" x="-40%" y="-10%" width="180%" height="160%">
+          <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(200,168,75,0.55)"/>
+        </filter>
+        <radialGradient id="${gId}" cx="50%" cy="30%" r="65%">
+          <stop offset="0%" stop-color="${activo ? '#f5e070' : '#1e1808'}"/>
+          <stop offset="100%" stop-color="${bg}"/>
+        </radialGradient>
+      </defs>
+      <path filter="url(#sh1)"
+        d="M32 2 C16 2 4 14 4 30 C4 52 32 82 32 82 C32 82 60 52 60 30 C60 14 48 2 32 2 Z"
+        fill="url(#${gId})" stroke="#c8a84b" stroke-width="2.5"/>
+      <circle cx="32" cy="30" r="19" fill="none" stroke="${star}" stroke-width="0.7" stroke-dasharray="2,4" opacity="0.6"/>
+      <path d="M32,14 L34.8,22.5 L43.5,22.5 L36.5,28 L39.3,36.5 L32,31 L24.7,36.5 L27.5,28 L20.5,22.5 L29.2,22.5 Z"
+        fill="${star}"/>
+      <text x="32" y="57" text-anchor="middle"
+        font-family="'Playfair Display',Georgia,serif"
+        font-weight="900" font-size="8" letter-spacing="1.5"
+        fill="${text}">INICIO</text>
+    </svg>`.trim();
+    return {
+      url:        'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+      scaledSize: new google.maps.Size(64, 84),
+      anchor:     new google.maps.Point(32, 82)
+    };
+  }
+
+  // ── RESTO DE PUNTOS ──────────────────────────────────────────
   const bg      = activo ? '#c8a84b' : '#1c1810';
   const starCol = activo ? '#1c1810' : '#e8c96a';
   const numCol  = activo ? '#1c1810' : '#c8a84b';
   const stroke  = activo ? '#e8c96a' : '#c8a84b';
-
-  // Estrella pequeña arriba, número abajo
   const starPath = 'M22,10 L23.5,15 L28,15 L24.5,18 L26,23 L22,20 L18,23 L19.5,18 L16,15 L20.5,15 Z';
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="62" viewBox="0 0 48 62">
@@ -201,6 +235,55 @@ function initMap() {
   construirPanelLista();
   iniciarPlaylist();
   configurarFrasesStreetView();
+  agregarLabelInicio();
+  setTimeout(mostrarSVHint, 2000);
+}
+
+/* ================================================================
+   ETIQUETA "COMIENZA AQUÍ" SOBRE EL PUNTO 1
+   ================================================================ */
+function agregarLabelInicio() {
+  const infoLabel = new google.maps.InfoWindow({
+    content: '<div class="mapa-inicio-label"><span class="mil-arrow">▼</span><span>Comienza aquí</span></div>',
+    disableAutoPan: true
+  });
+  infoLabel.open(map, markers[0]);
+  markers[0].addListener('click', () => infoLabel.close());
+  // Rebote inicial para llamar la atención
+  markers[0].setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(() => markers[0].setAnimation(null), 3000);
+}
+
+/* ================================================================
+   HINT STREET VIEW — orientación flotante
+   ================================================================ */
+function mostrarSVHint() {
+  const mapEl = document.getElementById('map');
+  if (!mapEl) return;
+  const hint = document.createElement('div');
+  hint.id = 'sv-hint';
+  hint.innerHTML = `
+    <div class="svh-inner">
+      <div class="svh-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="3"/><path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+        </svg>
+      </div>
+      <div class="svh-texto">
+        <strong>Recorre la Séptima en Street View</strong>
+        <span>Arrastra el muñequito naranja al mapa</span>
+      </div>
+      <span class="svh-flecha">→</span>
+    </div>
+    <button class="svh-cerrar" aria-label="Cerrar">✕</button>`;
+  mapEl.appendChild(hint);
+  hint.querySelector('.svh-cerrar').addEventListener('click', () => hint.remove());
+  setTimeout(() => { if (hint.parentNode) hint.remove(); }, 10000);
+  const pano = map.getStreetView();
+  pano.addListener('visible_changed', () => {
+    if (pano.getVisible() && hint.parentNode) hint.remove();
+  });
 }
 
 /* ================================================================
@@ -389,14 +472,24 @@ function construirPanelLista() {
   if (!lista) return;
   PUNTOS_HISTORICOS.forEach((punto, index) => {
     const item = document.createElement('div');
-    item.className = 'panel-item';
+    item.className = 'panel-item' + (punto.id === 1 ? ' panel-item--inicio' : '');
     item.setAttribute('role', 'listitem');
-    item.innerHTML = `
-      <div class="panel-item-num">${punto.id}</div>
-      <div class="panel-item-info">
-        <div class="panel-item-title">${punto.titulo}</div>
-        <div class="panel-item-year">${punto.periodo}</div>
-      </div>`;
+    if (punto.id === 1) {
+      item.innerHTML = `
+        <div class="panel-item-num panel-item-num--inicio">✦</div>
+        <div class="panel-item-info">
+          <div class="panel-item-title">${punto.titulo}</div>
+          <div class="panel-item-year">${punto.periodo}</div>
+          <span class="panel-inicio-badge">✦ Inicio del recorrido</span>
+        </div>`;
+    } else {
+      item.innerHTML = `
+        <div class="panel-item-num">${punto.id}</div>
+        <div class="panel-item-info">
+          <div class="panel-item-title">${punto.titulo}</div>
+          <div class="panel-item-year">${punto.periodo}</div>
+        </div>`;
+    }
     item.addEventListener('click', () => irAlPunto(index));
     lista.appendChild(item);
   });
