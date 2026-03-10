@@ -13,7 +13,7 @@ const PUNTOS_HISTORICOS = [
     fuente:"Archivo de Bogotá / IDPC",
     imagenes:["images/p01-septimazo-1.jpg","images/p01-septimazo-2.jpg"], video:"", audio:"" },
   // 2
-{ id:2, lat:4.6045, lng:-74.0718,
+{ id:2, lat:4.6046839, lng:-74.0718372,
   titulo:"Peatonalización de la Carrera Séptima",
   periodo:"2012 – presente",
   subtitulo:"La calle volvió a pertenecer a los peatones",
@@ -24,7 +24,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p02-placeholder-1.jpg","images/p02-placeholder-2.jpg"], video:"", audio:"" },
 
 // 3
-{ id:3, lat:4.6040, lng:-74.0720,
+{ id:3, lat:4.6043357, lng:-74.0719735,
   titulo:"Hallazgos arqueológicos bajo la Séptima",
   periodo:"2012 – 2014",
   subtitulo:"Capas enterradas de la historia de Bogotá",
@@ -35,7 +35,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p03-placeholder-1.jpg","images/p03-placeholder-2.jpg"], video:"", audio:"" },
 
 // 4
-{ id:4, lat:4.6035, lng:-74.0721,
+{ id:4, lat:4.6025448, lng:-74.0727356,
   titulo:"Capilla del Humilladero",
   periodo:"Siglos XVI – XIX",
   subtitulo:"Un templo colonial desaparecido para abrir paso a la modernización",
@@ -46,7 +46,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p04-placeholder-1.jpg","images/p04-placeholder-2.jpg"], video:"", audio:"" },
 
 // 5
-{ id:5, lat:4.6030, lng:-74.0723,
+{ id:5, lat:4.6024608, lng:-74.0727773,
   titulo:"La primera misa de Santa Fe",
   periodo:"1538",
   subtitulo:"El inicio simbólico de la ciudad en el entorno del actual Parque Santander",
@@ -121,7 +121,7 @@ const PUNTOS_HISTORICOS = [
     imagenes:["images/p13-eltiempo-1.jpg","images/p13-eltiempo-2.jpg"], video:"", audio:"" },
   // 14
   // 14
-{ id:14, lat:4.6009, lng:-74.0734,
+{ id:14, lat:4.6014662, lng:-74.0734847,
   titulo:"El tranvía de Bogotá en la Carrera Séptima",
   periodo:"1884 – 1951",
   subtitulo:"El transporte que modernizó la ciudad",
@@ -132,7 +132,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p14-placeholder-1.jpg","images/p14-placeholder-2.jpg"], video:"", audio:"" },
 
 // 15
-{ id:15, lat:4.6006, lng:-74.0736,
+{ id:15, lat:4.6013262, lng:-74.0734789,
   titulo:"La Séptima como corredor comercial del siglo XX",
   periodo:"1900 – 1940",
   subtitulo:"Hoteles, vitrinas y cafés del centro moderno",
@@ -143,7 +143,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p15-placeholder-1.jpg","images/p15-placeholder-2.jpg"], video:"", audio:"" },
 
 // 16
-{ id:16, lat:4.6003, lng:-74.0738,
+{ id:16, lat:4.6009936, lng:-74.0736899,
   titulo:"Procesiones y ceremonias religiosas del centro",
   periodo:"Siglos XVII – XX",
   subtitulo:"La Séptima como ruta ceremonial",
@@ -154,7 +154,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p16-placeholder-1.jpg","images/p16-placeholder-2.jpg"], video:"", audio:"" },
 
 // 17
-{ id:17, lat:4.6000, lng:-74.0739,
+{ id:17, lat:4.6012382, lng:-74.0735336,
   titulo:"La Marcha del Silencio",
   periodo:"7 de febrero de 1948",
   subtitulo:"La multitud que pidió paz antes del Bogotazo",
@@ -164,7 +164,7 @@ const PUNTOS_HISTORICOS = [
   fuente:"Centro Nacional de Memoria Histórica / Archivo de Bogotá / Biblioteca Nacional",
   imagenes:["images/p17-placeholder-1.jpg","images/p17-placeholder-2.jpg"], video:"", audio:"" },
   // 18
-  { id:18, lat:4.6012382, lng:-74.0735336,
+  { id:18, lat:4.601156, lng:-74.0735853,
     titulo:"Asesinato de Jorge Eliécer Gaitán — El Bogotazo", periodo:"9 de abril de 1948",
     subtitulo:"El asesinato que cambió la historia de Colombia", categoria:"Historia Trágica", emoji:"⚫",
     texto:"El 9 de abril de 1948, en la Carrera Séptima cerca de la Avenida Jiménez, fue asesinado el líder liberal Jorge Eliécer Gaitán. Su muerte provocó una explosión de violencia conocida como El Bogotazo.\n\nLas protestas y disturbios que siguieron destruyeron gran parte del centro de Bogotá y marcaron el inicio de una etapa de violencia política en el país. Hoy, placas conmemorativas recuerdan el lugar del asesinato que cambió la historia de Colombia.",
@@ -172,7 +172,7 @@ const PUNTOS_HISTORICOS = [
     fuente:"Casa Museo Jorge Eliécer Gaitán / Biblioteca Nacional",
     imagenes:["images/p18-gaitan-1.jpg","images/p18-gaitan-2.jpg"], video:"", audio:"" },
  // 19
-{ id:19, lat:4.5994, lng:-74.0742,
+{ id:19, lat:4.6003843, lng:-74.074066,
   titulo:"Asesinato de Rafael Uribe Uribe",
   periodo:"15 de octubre de 1914",
   subtitulo:"Un magnicidio antes del Bogotazo",
@@ -183,7 +183,7 @@ const PUNTOS_HISTORICOS = [
   imagenes:["images/p19-placeholder-1.jpg","images/p19-placeholder-2.jpg"], video:"", audio:"" },
 
   // 20
-{ id:20, lat:4.5991, lng:-74.0744,
+{ id:20, lat:4.6000517, lng:-74.0742729,
   titulo:"La Séptima Papeleta y la Constitución de 1991",
   periodo:"1990 – 1991",
   subtitulo:"El movimiento estudiantil que cambió la Constitución",

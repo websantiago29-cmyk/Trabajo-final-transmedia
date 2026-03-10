@@ -652,3 +652,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') { cerrarModalPunto(); cerrarModalGuia(); }
   });
 });
+
