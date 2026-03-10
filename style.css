@@ -2145,3 +2145,44 @@ a     { color: inherit; }
   transition: color 0.2s;
 }
 .svh-cerrar:hover { color: var(--gold-light); }
+
+/* ================================================================
+   BOTÓN DE ACTIVACIÓN DE SONIDO — intro-recorrido.html
+   ================================================================ */
+.intro-sound-btn {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(10,8,4,0.82);
+  border: 1px solid rgba(200,168,75,0.5);
+  border-radius: 2px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: opacity 0.7s ease, background 0.2s;
+  animation: pulsoSonido 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+.intro-sound-btn:hover {
+  background: rgba(200,168,75,0.15);
+  border-color: var(--gold);
+}
+@keyframes pulsoSonido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200,168,75,0.0); }
+  50%       { box-shadow: 0 0 0 6px rgba(200,168,75,0.15); }
+}
+.isb-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+.isb-texto {
+  font-family: var(--font-body), serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream);
+}

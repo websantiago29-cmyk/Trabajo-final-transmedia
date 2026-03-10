@@ -21,17 +21,22 @@
     <div class="intro-grid intro-grid--compact">
 
       <!-- VIDEO -->
-      <div class="intro-video-col"><
+      <div class="intro-video-col">
         <div class="intro-video-wrap">
-         <video class="intro-video" src="video/intro_recorrido.mp4"
-  autoplay muted loop playsinline preload="metadata"
-  aria-label="Video de introducción al recorrido por la Séptima"></video>
+          <video class="intro-video" id="intro-video-el" src="video/intro_recorrido.mp4"
+            autoplay muted loop playsinline preload="metadata"
+            aria-label="Video de introducción al recorrido por la Séptima"></video>
           <div class="intro-video-placeholder" aria-hidden="true">
             <div class="ivp-inner">
               <div class="ivp-icon">▶</div>
               <p>La Séptima en movimiento</p>
             </div>
           </div>
+          <!-- Botón de sonido — visible hasta que el usuario active el audio -->
+          <button class="intro-sound-btn" id="btn-sonido" aria-label="Activar sonido del video">
+            <span class="isb-icon" id="isb-icon">🔇</span>
+            <span class="isb-texto" id="isb-texto">Toca para activar el sonido</span>
+          </button>
           <div class="intro-video-frame" aria-hidden="true"></div>
         </div>
         <p class="intro-video-credit">Archivo visual · Carrera Séptima, Bogotá</p>
@@ -92,33 +97,38 @@
     const btn = document.getElementById('btn-iniciar-recorrido');
     if (btn) btn.addEventListener('click', () => sessionStorage.setItem('iniciarPlaylist','1'));
 
-    const video = document.querySelector('.intro-video');
-    const ph = document.querySelector('.intro-video-placeholder');
+    const video = document.getElementById('intro-video-el');
+    const ph    = document.querySelector('.intro-video-placeholder');
+    const btnS  = document.getElementById('btn-sonido');
+    const icoEl = document.getElementById('isb-icon');
+    const txtEl = document.getElementById('isb-texto');
+
+    let soundOn = false;
+
+    function activarSonido() {
+      if (!video || soundOn) return;
+      video.muted = false;
+      video.volume = 0.85;
+      video.play().catch(() => {
+        // El navegador bloqueó la reproducción — el usuario debe interactuar
+      });
+      soundOn = true;
+      if (icoEl) icoEl.textContent = '🔊';
+      if (txtEl) txtEl.textContent = 'Sonido activo';
+      // Ocultar el botón tras 2.5 s
+      setTimeout(() => { if (btnS) btnS.style.opacity = '0'; }, 2500);
+      setTimeout(() => { if (btnS) btnS.style.display = 'none'; }, 3200);
+    }
+
+    // Clic en el botón dedicado
+    if (btnS) btnS.addEventListener('click', (e) => { e.stopPropagation(); activarSonido(); });
+
+    // También activa con cualquier clic en la página (fallback)
+    document.addEventListener('click', activarSonido, { once: true });
 
     if (video && ph) {
-      video.addEventListener('error', () => {
-        ph.style.opacity = '1';
-        ph.style.pointerEvents = 'auto';
-      });
-
-      video.addEventListener('loadeddata', () => {
-        ph.style.display = 'none';
-      });
+      video.addEventListener('error', () => { ph.style.opacity = '1'; ph.style.pointerEvents = 'auto'; });
+      video.addEventListener('loadeddata', () => { ph.style.display = 'none'; });
     }
-
-    // Primer clic en cualquier parte = activar sonido
-    function activarSonido() {
-      if (!video) return;
-      video.muted = false;
-      video.volume = 1;
-
-      video.play().catch(err => {
-        console.log('El navegador bloqueó el audio automático:', err);
-      });
-
-      document.removeEventListener('click', activarSonido);
-    }
-
-    document.addEventListener('click', activarSonido, { once: true });
   });
 </script>
